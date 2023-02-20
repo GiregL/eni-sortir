@@ -14,6 +14,8 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\RememberMeBadge;
+use App\Repository\UserRepository;
 
 class AuthControllerAuthenticator extends AbstractLoginFormAuthenticator
 {
@@ -23,22 +25,28 @@ class AuthControllerAuthenticator extends AbstractLoginFormAuthenticator
 
     private UrlGeneratorInterface $urlGenerator;
 
-    public function __construct(UrlGeneratorInterface $urlGenerator)
+    private $userRepository;
+
+    public function __construct(UrlGeneratorInterface $urlGenerator, UserRepository $userRepository)
     {
         $this->urlGenerator = $urlGenerator;
+        $this->userRepository = $userRepository;
     }
 
     public function authenticate(Request $request): Passport
     {
-        $email = $request->request->get('email', '');
+        $emailUsername = $request->request->get('emailUsername', '');
 
-        $request->getSession()->set(Security::LAST_USERNAME, $email);
+        $request->getSession()->set(Security::LAST_USERNAME, $emailUsername);
 
         return new Passport(
-            new UserBadge($email),
+            new UserBadge($emailUsername, function ($userIdentifier) {
+                return $this->userRepository->findByEmailOrUsername($userIdentifier);
+            }),
             new PasswordCredentials($request->request->get('password', '')),
             [
                 new CsrfTokenBadge('authenticate', $request->request->get('_csrf_token')),
+                new RememberMeBadge()
             ]
         );
     }
