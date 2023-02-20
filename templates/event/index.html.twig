@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Évènements disponibles{% endblock %}
+
+{% block body %}
+
+    <ul>
+        {% for event in availableEvents %}
+            <li>{{ event.name }} : {{ event.eventInfos }} - {{ event.startDate | date('m/d/Y') }}</li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}
