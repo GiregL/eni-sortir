@@ -3,18 +3,59 @@
 {% block title %}Hello MainController!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+{% include "partials/_header.html.twig" %}
+<main class="container">
+    <form action="">
+        <h2>Filtrer les sorties</h2>
+        <div class="grid">
+            <div>
+                <label for="">Site : </label>
+                <select name="" id="">
+                    <option value=""></option>
+                    <option value=""></option>
+                </select>
+                <label for="">Le nom de la sortie contient : </label>
+                <input type="search" name="" id="">
+                <span>Entre <input type="date" name="" id=""> et <input type="date" name="" id=""></span>
+            </div>
+            <fieldset>
+                <label for=""><input type="checkbox" name="" id=""> Sorties dont je suis l'organisateur/trice</label>
+                <label for=""><input type="checkbox" name="" id=""> Sorties auxquelles je suis inscrit/e</label>
+                <label for=""><input type="checkbox" name="" id=""> Sorties auxquelles je ne suis pas inscrit/e</label>
+                <label for=""><input type="checkbox" name="" id=""> Sorties passées</label>
+            </fieldset>
+            <button type="submit">Rechercher</button>
+        </div>
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <th scope="col">Nom de la sortie</th>
+                <th scope="col">Date de la sortie</th>
+                <th scope="col">Clôture</th>
+                <th scope="col">Etat</th>
+                <th scope="col">Inscrit</th>
+                <th scope="col">Organisateur</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for event in event_list %}
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="" role="button">Créer une sortie</a>
+</main>
+<footer>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/wamp64/www/eni-sortir/src/Controller/MainController.php'|file_link(0) }}">src/Controller/MainController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/wamp64/www/eni-sortir/templates/main/index.html.twig'|file_link(0) }}">templates/main/index.html.twig</a></code></li>
-    </ul>
-</div>
+</footer>
 {% endblock %}
