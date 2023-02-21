@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Member;
 use App\Entity\User;
+use App\Entity\Event;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Query\Expr\Join;
