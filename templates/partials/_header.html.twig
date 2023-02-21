@@ -1,19 +1,30 @@
-{% 
-    set links = [
+{% set menu = [
+        {"link":url("app_main"), "label":"Accueil"}, 
+    ]
+%}
+{%
+    set disconnectedlinks = [
+        {"link":"/login", "label":"Se connecter"},
+        {"link":"/register", "label":"S'enregistrer"},
+    ]
+%}
+{%
+    set connectedLinks = [
         {"link":"/", "label":"Villes"}, 
         {"link":"/", "label":"Sites"}, 
-        {"link":url("app_main"), "label":"Accueil"}, 
         {"link":"/", "label":"Mon profil"},
-        {"link":"/", "label":"Se déconnecter"}
-    ] 
+        {"link":"/logout", "label":"Se déconnecter"},
+    ]
 %}
+{% set menu = app.user? menu|merge(connectedLinks):menu|merge(disconnectedlinks) %}
+
 
 <header class="container">
     <nav aria-labelledby="sections-heading">
         <h1><a href="">Sortir.com</a></h1>
         <ul>
-        {% for link in links %}
-            <li><a href="{{link.link}}">{{link.label}}</a></li>
+        {% for item in menu %}
+            <li><a href="{{item.link}}">{{item.label}}</a></li>
         {% endfor %}
         </ul>
     </nav>

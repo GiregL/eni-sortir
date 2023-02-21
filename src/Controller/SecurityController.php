@@ -20,6 +20,7 @@ class SecurityController extends AbstractController
 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
+        $error == true ? $error = $this->addFlash("error", "l'email ou le mot de passe sont incorrects") : $error = $this->addFlash("success", "Vous êtes connecté");
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
