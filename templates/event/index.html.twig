@@ -4,10 +4,31 @@
 
 {% block body %}
 
-    <ul>
-        {% for event in availableEvents %}
-            <li>{{ event.name }} : {{ event.eventInfos }} - {{ event.startDate | date('m/d/Y') }}</li>
-        {% endfor %}
-    </ul>
+    <table>
+        <thead>
+            <tr>
+                <th scope="col">Nom de la sortie</th>
+                <th scope="col">Date de la sortie</th>
+                <th scope="col">Clôture</th>
+                <th scope="col">Etat</th>
+                <th scope="col">Inscrit</th>
+                <th scope="col">Organisateur</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for event in availableEvents %}
+            <tr>
+                <td>{{ event.name }}</td>
+                <td>{{ event.startDate | date('m/d/Y') }}</td>
+                <td>{{ event.dateLimitRegister|date('m/d/Y') }}</td>
+                <td></td>
+                <td>{{ event.maxRegister }}</td>
+                <td></td>
+                <td>{{ event.eventInfos }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
 {% endblock %}
