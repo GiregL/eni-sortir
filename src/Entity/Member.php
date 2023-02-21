@@ -50,6 +50,12 @@ class Member
     private $asset;
 
     /**
+     * @ORM\OneToOne(targetEntity=User::class, cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $user;
+
+    /**
      * @ORM\ManyToMany(targetEntity=Event::class, mappedBy="members")
      */
     private $events;
@@ -215,5 +221,21 @@ class Member
         $this->site = $site;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param mixed $user
+     */
+    public function setUser($user): void
+    {
+        $this->user = $user;
     }
 }

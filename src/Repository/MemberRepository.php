@@ -3,8 +3,12 @@
 namespace App\Repository;
 
 use App\Entity\Member;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
+use Psr\Log\LoggerInterface;
 
 /**
  * @extends ServiceEntityRepository<Member>
@@ -16,9 +20,12 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class MemberRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private $logger;
+
+    public function __construct(ManagerRegistry $registry, LoggerInterface $logger)
     {
         parent::__construct($registry, Member::class);
+        $this->logger = $logger;
     }
 
     public function add(Member $entity, bool $flush = false): void
@@ -36,6 +43,37 @@ class MemberRepository extends ServiceEntityRepository
 
         if ($flush) {
             $this->getEntityManager()->flush();
+        }
+    }
+
+    /**
+     * Returns the profile of a given user.
+     * Initializes User's profile property.
+     * @param User $user User to get the profile of.
+     * @return Member|null Member profile or null if it does not exists.
+     */
+    public function findMemberProfileForUser(User $user): ?Member
+    {
+        try {
+            $profile = $this->createQueryBuilder('m')
+                ->leftJoin("m.user", "u")
+                ->andWhere('u.id = :userId')
+                ->select('m')
+                ->setParameter("userId", $user->getId())
+                ->getQuery()
+                ->getOneOrNullResult();
+
+            if (!$profile) {
+                $this->logger->warning("Impossible de récupérer le profil utilisateur : retour null.");
+                return null;
+            }
+
+            $user->setProfil($profile);
+
+            return $profile;
+        } catch (NonUniqueResultException $e) {
+            $this->logger->warning("Erreur lors de la récupération du profil de l'utilisateur: " . $e->getMessage());
+            return null;
         }
     }
 

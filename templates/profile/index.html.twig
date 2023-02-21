@@ -10,44 +10,38 @@
             <img src="https://fastly.picsum.photos/id/619/200/300.jpg" alt="img">
             <div>
                 <div class="grid">
-                    <p>Pseudo</p>
-                    <input type="text">
+                    <label for="pseudo">Pseudo</label>
+                    <input id="pseudo" name="pseudo" type="text" value="{{ username }}">
                 </div>
                 <div class="grid">
-                    <p>Prénom</p>
-                    <input type="text">
+                    <label for="firstName">Prénom</label>
+                    <input id="firstName" name="firstName" type="text" value="{{ firstname }}">
                 </div>
                 <div class="grid">
-                    <p>Nom</p>
-                    <input type="text">
+                    <label for="lastName">Nom</label>
+                    <input id="lastName" name="lastName" type="text" value="{{ lastName }}">
                 </div>
                 <div class="grid">
-                    <p>Téléphone</p>
-                    <input type="text">
+                    <label for="phone">Téléphone</label>
+                    <input id="phone" name="phone" type="text" value="{{ phone }}">
                 </div>
                 <div class="grid">
-                    <p>E-Mail</p>
-                    <input type="email">
+                    <label for="email">E-Mail</label>
+                    <input id="email" name="email" type="email" value="{{ email }}">
                 </div>
                 <div class="grid">
-                    <p>Mot de passe</p>
-                    <input type="password">
+                    <label for="password">Mot de passe</label>
+                    <input id="password" name="password" type="password">
                 </div>
                 <div class="grid">
-                    <p>Confirmation</p>
-                    <input type="password">
+                    <label for="confirmPassword">Confirmation</label>
+                    <input id="confirmPassword" name="confirmPassword" type="password">
                 </div>
                 <div class="grid">
-                    <p>Ville de rattachement</p>
-                    <select name="ville" id="ville">
-                        <option value="Rennes">Rennes</option>
-                        <option value="Nantes">Nantes</option>
-                        <option value="Quimper">Quimper</option>
+                    <label for="city">Ville de rattachement</label>
+                    <select name="city" id="city">
+                        <option value="{{ city }}" selected>{{ city }}</option>
                     </select>
-                </div>
-                <div class="grid">
-                    <p>Ma photo</p>
-                    <p>B</p>
                 </div>
             </div>
         </div>
