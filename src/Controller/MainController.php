@@ -24,7 +24,7 @@ class MainController extends AbstractController
     public function index(): Response
     {
         $availableEvents = $this->eventRepository->findAllAvailableEvents();
-
+        
         return $this->render('main/index.html.twig', [
             "availableEvents" => $availableEvents,
         ]);

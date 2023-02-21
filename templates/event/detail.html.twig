@@ -21,9 +21,9 @@
                 <td>{{ availableEvent.name }}</td>
                 <td>{{ availableEvent.startDate | date('m/d/Y') }}</td>
                 <td>{{ availableEvent.dateLimitRegister|date('m/d/Y') }}</td>
-                <td></td>
+                <td>{{ availableEvent.state.label }}</td>
                 <td>{{ availableEvent.maxRegister }}</td>
-                <td></td>
+                {# <td>{{ user.profil.user.username }}</td> #}
                 <td>{{ availableEvent.eventInfos }}</td>
             </tr>
         </tbody>

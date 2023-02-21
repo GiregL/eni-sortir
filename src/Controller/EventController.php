@@ -3,7 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Event;
+use App\Entity\Site;
+use App\Entity\Member;
 use App\Repository\EventRepository;
+use App\Repository\MemberRepository;
+use App\Repository\SiteRepository;
 use App\Services\EventServices;
 use App\Services\MailerServices;
 use Psr\Log\LoggerInterface;
@@ -36,8 +40,11 @@ class EventController extends AbstractController
      */
     public function detailEvents(Event $availableEvent): Response
     {
+        $user = $this->getUser();
+        
         return $this->render('event/detail.html.twig', [
-            "availableEvent" => $availableEvent
+            "availableEvent" => $availableEvent,
+            "user" => $user,
         ]);
     }
 
@@ -89,5 +96,19 @@ class EventController extends AbstractController
             $this->addFlash("error", "Impossible d'annuler l'événement, une erreur interne est survenue.");
             return $this->redirectToRoute("app_event_detail", ["id" => $event->getId()]);
         }
+    }
+
+    /**
+     * @Route("/events/{id}/subscribe", name="app_event_inscription", requirements={"id"="\d+"})
+     */
+    public function addMemberToEvent(Request $request, Event $availableEvent): Response {
+
+        $user = $this->getUser()->getProfil();
+        $user->addOrganizedEvent($availableEvent);
+
+        return $this->render('event/detail.html.twig', [
+            "availableEvent" => $availableEvent,
+            "user" => $user,
+        ]);
     }
 }
