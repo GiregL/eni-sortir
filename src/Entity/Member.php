@@ -66,7 +66,7 @@ class Member
     private $organizedEvents;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Site::class, inversedBy="members")
+     * @ORM\ManyToOne(targetEntity=Site::class, inversedBy="members", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $site;

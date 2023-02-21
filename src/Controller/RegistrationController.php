@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\Member;
+use App\Entity\Site;
 use App\Form\RegistrationFormType;
 use App\Security\AuthControllerAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
@@ -33,7 +35,18 @@ class RegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
-
+            $profil = new Member();
+            $site = new Site();
+            $site->setName('Rennes');
+            $user->setProfil($profil);
+            $profil->setUser($user);
+            $profil->setSite($site);
+            $profil->setName('');
+            $profil->setFirstname('');
+            $profil->setPhone('');
+            $profil->setMail($form->get('email')->getData());
+            $profil->setAdmin(false);
+            $profil->setAsset(false);
             $entityManager->persist($user);
             $entityManager->flush();
             // do anything else you need here, like send an email

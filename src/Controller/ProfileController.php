@@ -55,4 +55,14 @@ class ProfileController extends AbstractController
             "city" => $user->getProfil()->getSite()->getName()
         ]);
     }
+
+    /**
+     * @Route("/profile/detail", name="app_profile_detail")
+     */
+    public function detail(): Response
+    {
+        return $this->render('profile/detail.html.twig', [
+            'controller_name' => 'ProfileController',
+        ]);
+    }
 }

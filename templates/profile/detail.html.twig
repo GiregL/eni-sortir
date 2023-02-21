@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ENI Sortir - Profil de {% endblock %}
+
+{% block body %}
+
+    <main class="container">
+        <h1>Mon profil</h1>
+        <div class="grid">
+            <img src="https://fastly.picsum.photos/id/619/200/300.jpg" alt="img">
+            <div>
+                <div class="grid">
+                    <p>Prénom</p>
+                    <input type="text">
+                </div>
+                <div class="grid">
+                    <p>Nom</p>
+                    <input type="text">
+                </div>
+                <div class="grid">
+                    <p>Téléphone</p>
+                    <input type="text">
+                </div>
+                <div class="grid">
+                    <p>E-Mail</p>
+                    <input type="email">
+                </div>
+                <div class="grid">
+                    <p>Ville de rattachement</p>
+                    <select name="ville" id="ville">
+                        <option value="Rennes">Rennes</option>
+                        <option value="Nantes">Nantes</option>
+                        <option value="Quimper">Quimper</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="grid">
+            <button>Retour</button>
+        </div>
+    </main>
+
+{% endblock %}
