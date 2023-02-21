@@ -17,17 +17,15 @@
             </tr>
         </thead>
         <tbody>
-            {% for event in availableEvents %}
             <tr>
-                <td>{{ event.name }}</td>
-                <td>{{ event.startDate | date('m/d/Y') }}</td>
-                <td>{{ event.dateLimitRegister|date('m/d/Y') }}</td>
+                <td>{{ availableEvent.name }}</td>
+                <td>{{ availableEvent.startDate | date('m/d/Y') }}</td>
+                <td>{{ availableEvent.dateLimitRegister|date('m/d/Y') }}</td>
                 <td></td>
-                <td>{{ event.maxRegister }}</td>
+                <td>{{ availableEvent.maxRegister }}</td>
                 <td></td>
-                <td>{{ event.eventInfos }}</td>
+                <td>{{ availableEvent.eventInfos }}</td>
             </tr>
-            {% endfor %}
         </tbody>
     </table>
 

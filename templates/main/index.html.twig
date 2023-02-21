@@ -49,7 +49,7 @@
                 <td></td>
                 <td>{{ event.maxRegister }}</td>
                 <td></td>
-                <td>{{ event.eventInfos }}</td>
+                <td><a href="{{ path('app_event_detail',{id:event.id}) }}">Afficher </a></td>
             </tr>
             {% endfor %}
         </tbody>
