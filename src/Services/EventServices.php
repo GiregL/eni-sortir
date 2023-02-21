@@ -73,6 +73,7 @@ class EventServices
      */
     public function cancelEvent(Event $event): bool
     {
+        $this->logger->info("Appel du service d'annulation d'événement pour l'ID {$event->getId()}");
         if ($this->isEventStarted($event)) {
             return false;
         }
@@ -87,6 +88,7 @@ class EventServices
      */
     public function isEventArchived(Event $event): bool
     {
+        $this->logger->info("Appel du service de vérification d'événement archivé pour l'ID {$event->getId()}");
         if (!$event->getStartDate()) {
             return false;
         }

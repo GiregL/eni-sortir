@@ -16,9 +16,13 @@ class MailerServices
 
     private $logger;
     private $mailer;
+    private $platformEmailFrom;
 
-    public function __construct(LoggerInterface $logger, MailerInterface $mailer)
+    public function __construct($platformEmailFrom,
+                                LoggerInterface $logger,
+                                MailerInterface $mailer)
     {
+        $this->platformEmailFrom = $platformEmailFrom;
         $this->logger = $logger;
         $this->mailer = $mailer;
     }
@@ -28,10 +32,10 @@ class MailerServices
      */
     public function sendCancellationMail(Event $event, string $reason): void
     {
-        $from = "";
+        $this->logger->info("Appel du service d'envois de mails pour l'annulation d'un évenement. Avec l'ID : {$event->getId()}");
         foreach ($event->getMembers() as $member) {
             $email = (new Email())
-                ->from($from)
+                ->from($this->platformEmailFrom)
                 ->to($member->getMail())
                 ->subject('Annulation d\'événement')
                 ->text($reason);
