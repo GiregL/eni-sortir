@@ -2,6 +2,9 @@
 
 namespace App\Model;
 
+use App\Entity\City;
+use App\Entity\Site;
+
 /**
  * Profile update DTO
  */
@@ -16,130 +19,82 @@ class ProfileUpdateModel
     private $confirmPassword;
     private $city;
 
-    /**
-     * @return mixed
-     */
-    public function getPseudo()
+    public function getPseudo(): ?string
     {
         return $this->pseudo;
     }
 
-    /**
-     * @param mixed $pseudo
-     */
     public function setPseudo($pseudo): void
     {
         $this->pseudo = $pseudo;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getFirstName()
+    public function getFirstName(): ?string
     {
         return $this->firstName;
     }
 
-    /**
-     * @param mixed $firstName
-     */
     public function setFirstName($firstName): void
     {
         $this->firstName = $firstName;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getLastName()
+    public function getLastName(): ?string
     {
         return $this->lastName;
     }
 
-    /**
-     * @param mixed $lastName
-     */
     public function setLastName($lastName): void
     {
         $this->lastName = $lastName;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getPhone()
+    public function getPhone(): ?string
     {
         return $this->phone;
     }
 
-    /**
-     * @param mixed $phone
-     */
     public function setPhone($phone): void
     {
         $this->phone = $phone;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getEmail()
+    public function getEmail(): ?string
     {
         return $this->email;
     }
 
-    /**
-     * @param mixed $email
-     */
     public function setEmail($email): void
     {
         $this->email = $email;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getPassword()
+    public function getPassword(): ?string
     {
         return $this->password;
     }
 
-    /**
-     * @param mixed $password
-     */
     public function setPassword($password): void
     {
         $this->password = $password;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getConfirmPassword()
+    public function getConfirmPassword(): ?string
     {
         return $this->confirmPassword;
     }
 
-    /**
-     * @param mixed $confirmPassword
-     */
     public function setConfirmPassword($confirmPassword): void
     {
         $this->confirmPassword = $confirmPassword;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getCity()
+    public function getCity(): ?Site
     {
         return $this->city;
     }
 
-    /**
-     * @param mixed $city
-     */
-    public function setCity($city): void
+    public function setCity(Site $city): void
     {
         $this->city = $city;
     }

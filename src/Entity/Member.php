@@ -73,6 +73,14 @@ class Member
 
     public function __construct()
     {
+        $this->name = '';
+        $this->firstname = '';
+        $this->phone = '';
+        $this->mail = '';
+        $this->admin = false;
+        $this->asset = true;
+        $this->user = null;
+
         $this->events = new ArrayCollection();
         $this->organizedEvents = new ArrayCollection();
     }
