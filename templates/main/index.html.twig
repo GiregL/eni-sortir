@@ -40,19 +40,19 @@
                 <th scope="col">Actions</th>
             </tr>
         </thead>
-        {# <tbody>
-            {% for event in event_list %}
+        <tbody>
+            {% for event in availableEvents %}
             <tr>
+                <td>{{ event.name }}</td>
+                <td>{{ event.startDate | date('m/d/Y') }}</td>
+                <td>{{ event.dateLimitRegister|date('m/d/Y') }}</td>
                 <td></td>
+                <td>{{ event.maxRegister }}</td>
                 <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td><a href="{{ path('app_event_detail',{id:event.id}) }}">Afficher </a></td>
             </tr>
             {% endfor %}
-        </tbody> #}
+        </tbody>
     </table>
     <a href="" role="button">Créer une sortie</a>
 </main>

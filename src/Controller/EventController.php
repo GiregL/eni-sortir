@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Event;
 use App\Repository\EventRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,6 +31,16 @@ class EventController extends AbstractController
 
         return $this->render('event/index.html.twig', [
             "availableEvents" => $availableEvents
+        ]);
+    }
+
+    /**
+     * @Route("/events/{id}", name="app_event_detail", requirements={"id"="\d+"})
+     */
+    public function detailEvents(Event $availableEvent): Response
+    {
+        return $this->render('event/detail.html.twig', [
+            "availableEvent" => $availableEvent
         ]);
     }
 }
