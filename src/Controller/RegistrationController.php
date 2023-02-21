@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Entity\Member;
 use App\Entity\Site;
 use App\Form\RegistrationFormType;
+use App\Model\RegistrationModel;
 use App\Security\AuthControllerAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,10 +22,15 @@ class RegistrationController extends AbstractController
     /**
      * @Route("/register", name="app_register")
      */
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, AuthControllerAuthenticator $authenticator, EntityManagerInterface $entityManager): Response
+    public function register(Request $request,
+                             UserPasswordHasherInterface $userPasswordHasher,
+                             UserAuthenticatorInterface $userAuthenticator,
+                             AuthControllerAuthenticator $authenticator,
+                             EntityManagerInterface $entityManager): Response
     {
         $user = new User();
-        $form = $this->createForm(RegistrationFormType::class, $user);
+        $registrationModel = new RegistrationModel();
+        $form = $this->createForm(RegistrationFormType::class, $registrationModel);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -35,18 +41,18 @@ class RegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
+            $user->setEmail($registrationModel->getEmail());
+            $user->setUsername($registrationModel->getUsername());
+
             $profil = new Member();
-            $site = new Site();
-            $site->setName('Rennes');
-            $user->setProfil($profil);
             $profil->setUser($user);
-            $profil->setSite($site);
-            $profil->setName('');
-            $profil->setFirstname('');
-            $profil->setPhone('');
-            $profil->setMail($form->get('email')->getData());
+            $profil->setSite($registrationModel->getCity());
+            $profil->setMail($registrationModel->getEmail());
             $profil->setAdmin(false);
             $profil->setAsset(false);
+
+            $user->setProfil($profil);
+
             $entityManager->persist($user);
             $entityManager->flush();
             // do anything else you need here, like send an email

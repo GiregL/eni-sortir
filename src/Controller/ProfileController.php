@@ -12,6 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ProfileController extends AbstractController
@@ -58,7 +59,9 @@ class ProfileController extends AbstractController
      * @Route("/profile", "app_profile_update", methods={"POST"})
      * @IsGranted("ROLE_USER")
      */
-    public function updateProfile(Request $request, EntityManagerInterface $entityManager): Response
+    public function updateProfile(Request $request,
+                                  EntityManagerInterface $entityManager,
+                                  UserPasswordHasherInterface $passwordHasher): Response
     {
         $profileUpdate = new ProfileUpdateModel();
         $form = $this->createForm(ProfileUpdateFormType::class, $profileUpdate);
@@ -74,13 +77,29 @@ class ProfileController extends AbstractController
             }
 
             // Updating values
-            $user->setEmail($profileUpdate->getEmail());
-            $user->setUsername($profileUpdate->getPseudo());
-            $user->getProfil()->setMail($profileUpdate->getEmail());
-            $user->getProfil()->setFirstname($profileUpdate->getFirstName());
-            $user->getProfil()->setName($profileUpdate->getLastName());
-            $user->getProfil()->setPhone($profileUpdate->getPhone());
-            $user->getProfil()->setSite($profileUpdate->getCity());
+            if ($profileUpdate->getEmail()) {
+                $user->setEmail($profileUpdate->getEmail());
+                $user->getProfil()->setMail($profileUpdate->getEmail());
+            }
+            if ($profileUpdate->getPseudo()) { $user->setUsername($profileUpdate->getPseudo()); }
+            if ($profileUpdate->getFirstName()) { $user->getProfil()->setFirstname($profileUpdate->getFirstName()); }
+            if ($profileUpdate->getLastName()) { $user->getProfil()->setName($profileUpdate->getLastName()); }
+            if ($profileUpdate->getPhone()) { $user->getProfil()->setPhone($profileUpdate->getPhone()); }
+            if ($profileUpdate->getCity()) { $user->getProfil()->setSite($profileUpdate->getCity()); }
+
+            // Check if a new password should be set (both fields should not be empty or blank)
+            if ($profileUpdate->getPassword() !== null && trim($profileUpdate->getPassword()) !== ""
+                && $profileUpdate->getConfirmPassword() !== null && trim($profileUpdate->getConfirmPassword()) !== "") {
+
+                if ($profileUpdate->getPassword() === $profileUpdate->getConfirmPassword()) {
+                    $newPassword = $passwordHasher->hashPassword($user, $profileUpdate->getPassword());
+                    $user->setPassword($newPassword);
+
+                    $this->addFlash("success", "Votre mot de passe a bien été modifié.");
+                } else {
+                    $this->addFlash("error", "Le mot de passe et sa confirmation ne correspondent pas.");
+                }
+            }
 
             // Persist datas
             $entityManager->persist($user);
