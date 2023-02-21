@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\Member;
+use App\Entity\Site;
 use App\Form\ProfileUpdateFormType;
 use App\Model\ProfileUpdateModel;
 use App\Repository\MemberRepository;
@@ -132,6 +134,20 @@ class ProfileController extends AbstractController
     {
         return $this->render('profile/detail.html.twig', [
             'controller_name' => 'ProfileController',
+        ]);
+    }
+
+    /**
+     * @Route("/profile/detail/{id}", name="app_profile_detail_id", requirements={"id"="\d+"})
+     */
+    public function detailOrganizer(Member $profilOrganizer, Site $site): Response
+    {
+        $user = $this->getUserAndProfile();
+
+        return $this->render('profile/detail.html.twig', [
+            "profilOrganizer" => $profilOrganizer,
+            "user" => $user,
+            "site" => $site
         ]);
     }
 }

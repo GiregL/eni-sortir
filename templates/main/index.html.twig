@@ -46,10 +46,10 @@
                 <td>{{ event.name }}</td>
                 <td>{{ event.startDate | date('m/d/Y') }}</td>
                 <td>{{ event.dateLimitRegister|date('m/d/Y') }}</td>
-                <td></td>
+                <td>{{ event.state.label }}</td>
                 <td>{{ event.maxRegister }}</td>
-                <td></td>
-                <td><a href="{{ path('app_event_detail',{id:event.id}) }}">Afficher </a></td>
+                <td><a href="{{ path('app_profile_detail_id',{id:event.organizer.id}) }}">{{ event.organizer.name }}</a><td>
+                <td><a href="{{ path('app_event_detail',{id:event.id}) }}">Afficher</a></td>
             </tr>
             {% endfor %}
         </tbody>
