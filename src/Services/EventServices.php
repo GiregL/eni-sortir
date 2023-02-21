@@ -80,4 +80,21 @@ class EventServices
         $this->eventRepository->remove($event, true);
         return true;
     }
+
+    /**
+     * Checks if an event is archived.
+     * An event is archived when done since at least one month.
+     */
+    public function isEventArchived(Event $event): bool
+    {
+        if (!$event->getStartDate()) {
+            return false;
+        }
+
+        $now = new \DateTime();
+        $endDate = $event->getStartDate()->getTimestamp() + $event->getDuration();
+        $endedPlusOneMonth = date(strtotime("+1 month", $endDate));
+
+        return $now >= $endedPlusOneMonth;
+    }
 }

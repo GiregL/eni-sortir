@@ -19,32 +19,16 @@ use Symfony\Component\Routing\Annotation\Route;
 class EventController extends AbstractController
 {
     private $logger;
-    private $eventRepository;
     private $eventServices;
     private $mailerServices;
 
-    public function __construct(EventRepository $eventRepository,
-                                LoggerInterface $logger,
+    public function __construct(LoggerInterface $logger,
                                 EventServices $eventServices,
                                 MailerServices $mailerServices)
     {
-        $this->eventRepository = $eventRepository;
         $this->logger = $logger;
         $this->eventServices = $eventServices;
         $this->mailerServices = $mailerServices;
-    }
-
-    /**
-     * @Route("/events", name="app_events_available")
-     */
-    public function availableEvents(): Response
-    {
-        // Getting all current events
-        $availableEvents = $this->eventRepository->findAllAvailableEvents();
-
-        return $this->render('event/index.html.twig', [
-            "availableEvents" => $availableEvents
-        ]);
     }
 
     /**
@@ -64,6 +48,7 @@ class EventController extends AbstractController
     {
         $this->logger->info("Appel du service d'annulation d'événement.");
 
+        // Check if the user is authentified
         $currentUser = $this->getUser();
         if (!$currentUser) {
             $this->logger->warning("Utilisateur non authentifié sur la plateforme.");
@@ -71,6 +56,7 @@ class EventController extends AbstractController
             return $this->redirectToRoute("app_login");
         }
 
+        // CSRF security check
         $csrfToken = $request->request->get("token");
         if (!$this->isCsrfTokenValid('cancel-event-' . $event->getId(), $csrfToken)) {
             $this->logger->warning("Tentative de suppression frauduleuse d'événement. Tokens CSRF invalides.");
@@ -78,12 +64,21 @@ class EventController extends AbstractController
             return $this->redirectToRoute("app_main");
         }
 
+        // Check if the event is archived
+        if ($this->eventServices->isEventArchived($event)) {
+            $this->logger->info("Tentative de suppression d'un évènement archivé.");
+            $this->addFlash("error", "Impossible d'annuler une sortie déjà terminée et archivée.");
+            return $this->redirectToRoute("app_event_detail", ["id" => $event->getId()]);
+        }
+
+        // Check if the used is allowed to cancel the event
         if (!$this->eventServices->isUserOrganizerOfEvent($currentUser, $event)) {
             $this->logger->info("Tentative de suppression d'un événement dont l'utilisateur n'est pas organisateur.");
             $this->addFlash("error", "Vous ne pouvez pas supprimer cet événement, vous n'en êtes pas l'organisateur.");
             return $this->redirectToRoute("app_event_detail", ["id" => $event->getId()]);
         }
 
+        // Cancel the event and send emails if needed
         $removed = $this->eventServices->cancelEvent($event);
         if ($removed) {
             $this->logger->info("L'événement \"{$event->getName()}\" a été supprimé.");
