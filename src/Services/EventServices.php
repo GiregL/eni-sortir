@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Entity\Event;
+use App\Entity\Member;
 use App\Entity\User;
 use App\Model\EventState;
 use App\Repository\EventRepository;
@@ -63,6 +64,24 @@ class EventServices
         return $event->getState() === EventState::getFinished();
     }
 
+    /**
+     * Checks if a user can subscribe to the event
+     */
+    public function isEventSubscribtionClosed(Event $event): bool
+    {
+        return $event->getState() !== EventState::getClosed()
+            && $event->getState() !== EventState::getArchived()
+            && $event->getState() !== EventState::getCanceled();
+    }
+
+    /**
+     * Checks if a user is registered on the event (member or organizer)
+     */
+    public function isUserRegisteredOnEvent(Event $event, Member $member): bool
+    {
+        return $event->getOrganizer() === $member || $event->getMembers()->contains($member);
+    }
+
     public function isEventStarted(Event $event): bool
     {
         return $event->getState() === EventState::getOngoing();
@@ -111,5 +130,22 @@ class EventServices
         $withMonthTimeStamp = strtotime("+1 month", $finishedTimestamp);
 
         return $finished && ($withMonthTimeStamp <= $nowTimestamp);
+    }
+
+    /**
+     * Unsubs a member from an event
+     */
+    public function unsubEvent(Event $event, Member $member): bool
+    {
+        $now = (new \DateTime())->getTimestamp();
+
+        if ($event->getDateLimitRegister()->getTimestamp() >= $now
+            && $event->getMembers()->contains($member)
+            && $event->getOrganizer() !== $member
+            && !$this->isEventArchived($event)) {
+            return $this->eventRepository->removeMemberFromEvent($event, $member, true);
+        } else {
+            return false;
+        }
     }
 }

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Event;
 use App\Entity\Member;
+use App\Entity\User;
 use App\Form\EventType;
 use App\Model\EventState;
 use App\Repository\EventRepository;
@@ -12,6 +13,7 @@ use App\Services\EventServices;
 use App\Services\MailerServices;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -106,8 +108,22 @@ class EventController extends AbstractController
      * @Route("/events/{id}/subscribe", name="app_event_inscription", requirements={"id"="\d+"})
      */
     public function addMemberToEvent(Request $request, Event $availableEvent): Response {
-        $member = $this->getUser()->getProfil();
-        
+        $user = $this->getUser();
+
+        if (!$user) {
+            $this->logger->warning("L'utilisateur n'est pas authentifié sur la plateforme.");
+            $this->addFlash("error", "Vous devez vous authentifier pour accéder à cette fonctionnalité.");
+            return $this->redirectToRoute("app_login");
+        }
+
+        if (!($user instanceof User)) {
+            $this->logger->debug("Une erreur interne est survenue: l'utilisateur n'est pas une instance de User.");
+            $this->addFlash("error", "Une erreur interne est survenue.");
+            return $this->redirectToRoute("app_main");
+        }
+
+        $member = $user->getProfil();
+
         if(!$member) {
             $this->logger->warning("Utilisateur non authentifié sur la plateforme.");
             $this->addFlash("error", "Vous devez être authentifié sur l'application pour faire ceci.");
@@ -120,14 +136,20 @@ class EventController extends AbstractController
             $this->addFlash("error", "Il n'y pas d'évènement en cours");
             return $this->redirectToRoute("app_main");
         }
+
         //verifier si l'evenement n'est pas cloturé
-        if($availableEvent->getState() == EventState::getClosed() && $availableEvent->getState() != EventState::getOpen()) {
-            $this->logger->warning("L'inscription n'est plus possible, l'évènement est cloturé.");
+        if($this->eventServices->isEventSubscribtionClosed($availableEvent)) {
+            $this->logger->info("L'inscription n'est plus possible, l'évènement est cloturé.");
             $this->addFlash("error", "L'inscription n'est plus possible, l'évènement est cloturé.");
             return $this->redirectToRoute("app_main");
         }
 
         //verifier si il ne participe pas deja a levenement
+        if ($this->eventServices->isUserRegisteredOnEvent($availableEvent, $member)) {
+            $this->logger->info("L'utilisateur {$member->getId()} est déjà inscrit à l'événement {$availableEvent->getId()}");
+            $this->addFlash("error", "Vous êtes déjà inscrit à cet évènement.");
+            return $this->redirectToRoute("app_event_detail", ["id" => $availableEvent->getId()]);
+        }
 
         $this->eventRepository->addMemberToEvent($availableEvent, $member, true);
         //$this->memberRepository->addEventToMember($member, $availableEvent, false);
@@ -137,6 +159,51 @@ class EventController extends AbstractController
             "availableEvent" => $availableEvent,
             "user" => $member,
         ]);*/
+    }
+
+    /**
+     * Unsubs the current user from the given event
+     * @Route("/events/{id}/unsub", name="app_event_unsub", requirements={"id": "\d+"})
+     * @IsGranted("ROLE_USER")
+     */
+    public function unsubEvent(?Event $event): Response
+    {
+        if (!$event) {
+            $this->logger->warning("Tentative d'unsub sur un évènement qui n'existe pas en base.");
+            $this->addFlash("error", "Impossible de se désinscrire d'un évènement qui n'existe pas.");
+            return $this->redirectToRoute("app_main");
+        }
+
+        $user = $this->getUser();
+        if (!$user) {
+            $this->logger->info("L'utilisateur n'est pas authentifié sur la plateforme.");
+            $this->addFlash("error", "Vous devez être authentifié sur la plateforme pour accéder à cette fonctionnalité.");
+            return $this->redirectToRoute("app_login");
+        }
+
+        if (!($user instanceof User)) {
+            $this->logger->warning("Une erreur interne est survenue, l'utilisateur n'est pas une instance de User.");
+            $this->addFlash("error", "Une erreur interne est survenue.");
+            return $this->redirectToRoute("app_main");
+        }
+
+        $profile = $user->getProfil();
+
+        if (!$profile) {
+            $this->logger->warning("Le profil de l'utilisateur n'existe pas.");
+            $this->addFlash("error", "Le profil de l'utilisateur est introuvable.");
+            return $this->redirectToRoute("app_main");
+        }
+
+        $result = $this->eventServices->unsubEvent($event, $profile);
+        if ($result) {
+            $this->addFlash("success", "Vous avez bien été retiré de la liste des participants de l'évènement.");
+        } else {
+            $this->logger->warning("Une erreur interne est survenue lors du retrait de l'utilisateur {$profile->getId()} de la liste des participants de l'évènement {$event->getId()}");
+            $this->addFlash("error", "Vous n'avez pas pu être retiré de la liste des participants.");
+        }
+
+        return $this->redirectToRoute("app_event_detail", ["id" => $event->getId()]);
     }
 
     /**
@@ -152,7 +219,7 @@ class EventController extends AbstractController
             $entityManager->persist($event);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_events_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_main', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('event/new.html.twig', [

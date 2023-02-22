@@ -126,7 +126,7 @@ class ProfileController extends AbstractController
 
         if (!$user) {
             $this->addFlash("error", "Vous devez être authentifié pour accéder à cette page.");
-            return $this->redirectToRoute("app_login");
+            return null;
         }
 
         if (!($user instanceof User)) {
@@ -165,7 +165,7 @@ class ProfileController extends AbstractController
 
         if (!$user) {
             $this->addFlash("error", "Vous devez être authentifié pour accéder à cette page.");
-            return null;
+            return $this->redirectToRoute("app_login");
         }
 
         return $this->render('profile/detail.html.twig', [
