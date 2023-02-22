@@ -4,29 +4,71 @@
 
 {% block body %}
     {% include 'partials/_flash.html.twig' %}
-    <table>
-        <thead>
-            <tr>
-                <th scope="col">Nom de la sortie</th>
-                <th scope="col">Date de la sortie</th>
-                <th scope="col">Clôture</th>
-                <th scope="col">Etat</th>
-                <th scope="col">Inscrit</th>
-                <th scope="col">Organisateur</th>
-                <th scope="col">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>{{ availableEvent.name }}</td>
-                <td>{{ availableEvent.startDate | date('m/d/Y') }}</td>
-                <td>{{ availableEvent.dateLimitRegister|date('m/d/Y') }}</td>
-                <td>{{ availableEvent.state.label }}</td>
-                <td>{{ availableEvent.maxRegister }}</td>
-                <td>{{ user.profil.user.username }}</td>
-                <td>{{ availableEvent.eventInfos }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="container">
+        <div class="row"> 
+            <div class="grid col-xs-6">
+                <p>Nom de la sortie</p>
+                <input type="text" value="{{ availableEvent.name }}" readonly>
+            </div>
+            <div class="grid col-xs-6">
+                <p>Ville organisatrice</p>
+                <input type="text" value="{{ availableEvent.site.name }}" readonly>
+            </div>
+            <div class="grid col-xs-6">
+                <p>Date de la sortie</p>
+                <input type="text" value="{{ availableEvent.startDate | date('m/d/Y') }}" readonly>
+            </div>
+            <div class="grid col-xs-6">
+                <p>Lieu</p>
+                <input type="text" value="{{ availableEvent.place.name }}" readonly>
+            </div>
+            <div class="grid col-xs-6">
+                <p>Date limite d'inscription</p>
+                <input type="text" value="{{ availableEvent.dateLimitRegister|date('m/d/Y') }}" readonly>
+            </div>
+            <div class="grid col-xs-6">
+                <p>Rue</p>
+                <input type="text" value="{{ availableEvent.place.street }}" readonly>
+            </div>
+            <div class="grid col-xs-6">
+                <p>Nombre de places</p>
+                <input type="text" value="{{ availableEvent.maxRegister }}" readonly>
+            </div>
+            <div class="grid col-xs-6">
+                <p>Code postal</p>
+                <input type="text" value="{{ availableEvent.place.city.postCode }}" readonly>
+            </div>
+            <div class="grid col-xs-6">
+                <p>Durée</p>
+                <input type="text" value="{{ availableEvent.duration }}" readonly>
+            </div>
+            <div class="grid col-xs-6">
+                <p>Latitude</p>
+                <input type="text" value="{{ availableEvent.place.latitude }}" readonly>
+            </div>
+            <div class="grid col-xs-6">
+                <p>Description et infos</p>
+                <input type="text" value="{{ availableEvent.eventInfos }}" readonly>
+            </div>
+            <div class="grid col-xs-6">
+                <p>Longitude</p>
+                <input type="text" value="{{ availableEvent.place.longitude }}" readonly>
+            </div>
+        </div>
+    </div>
 
+
+    <form action="{{ path('app_event_cancel', {"id": availableEvent.id}) }}" method="post">
+        <input type="hidden" name="token" id="token" value="{{ csrf_token('cancel-event-' ~ availableEvent.id) }}">
+        <button type="submit" onclick="confirm('Voulez-vous vraiment annuler cet événement ?')">Annuler</button>
+    </form>
+
+{% endblock %}
+{% block stylesheet %}
+.wrapper {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 10px;
+  grid-auto-rows: minmax(100px, auto);
+}
 {% endblock %}
