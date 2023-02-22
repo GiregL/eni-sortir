@@ -109,6 +109,25 @@ class EventController extends AbstractController
      */
     public function addMemberToEvent(Request $request, Event $availableEvent): Response {
         $member = $this->getUser()->getProfil();
+        
+        if(!$member) {
+            $this->logger->warning("Utilisateur non authentifié sur la plateforme.");
+            $this->addFlash("error", "Vous devez être authentifié sur l'application pour faire ceci.");
+            return $this->redirectToRoute("app_login");
+        }
+
+        //verifier si l'evenemnt n'est pas nul
+        if(!$availableEvent){
+            $this->logger->warning("L'évènement est nul.");
+            $this->addFlash("error", "Il n'y pas d'évènement en cours");
+            return $this->redirectToRoute("app_main");
+        }
+        //verifier si l'evenement n'est pas cloturé
+        
+        
+        //verifier si il ne participe pas deja a levenement
+
+
         $this->eventRepository->addMemberToEvent($availableEvent, $member, true);
         $this->memberRepository->addEventToMember($member, $availableEvent, true);
 

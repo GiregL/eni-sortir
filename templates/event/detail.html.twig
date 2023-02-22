@@ -23,15 +23,10 @@
                 <td>{{ availableEvent.dateLimitRegister|date('m/d/Y') }}</td>
                 <td>{{ availableEvent.state.label }}</td>
                 <td>{{ availableEvent.maxRegister }}</td>
-                {# <td>{{ user.profil.user.username }}</td> #}
+                <td>{{ user.profil.user.username }}</td>
                 <td>{{ availableEvent.eventInfos }}</td>
             </tr>
         </tbody>
     </table>
-
-    <form action="{{ path('app_event_cancel', {"id": availableEvent.id}) }}" method="post">
-        <input type="hidden" name="token" id="token" value="{{ csrf_token('cancel-event-' ~ availableEvent.id) }}">
-        <button type="submit" onclick="confirm('Voulez-vous vraiment annuler cet événement ?')">Annuler</button>
-    </form>
 
 {% endblock %}
