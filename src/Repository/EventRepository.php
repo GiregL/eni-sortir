@@ -64,7 +64,7 @@ class EventRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findFilteredEvents(EventFilterData $criteria, User $user): array
+    public function findFilteredEvents(EventFilterData $criteria, int $user): array
     {
         $currentDate = new \DateTime();
 
