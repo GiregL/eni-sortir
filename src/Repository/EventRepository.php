@@ -2,11 +2,11 @@
 
 namespace App\Repository;
 
+use App\Data\EventFilterData;
 use App\Entity\Event;
 use App\Entity\User;
 use App\Entity\Member;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -64,28 +64,64 @@ class EventRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-//    /**
-//     * @return Event[] Returns an array of Event objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('e')
-//            ->andWhere('e.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('e.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function findFilteredEvents(EventFilterData $criteria): array
+    {
+        $currentDate = new \DateTime();
 
-//    public function findOneBySomeField($value): ?Event
-//    {
-//        return $this->createQueryBuilder('e')
-//            ->andWhere('e.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        $query =  $this->createQueryBuilder('event')
+            ->select('site', 'event', 'members', 'organizer')
+            ->join('event.site', 'site')
+            ->join('event.members', 'members')
+            ->join('event.organizer', 'organizer');
+
+        if (!empty($criteria->site)) {
+            $query = $query
+                ->andWhere('site.id = :site')
+                ->setParameter('site', $criteria->site);
+        }
+
+        if (!empty($criteria->event_name)) {
+            $query = $query
+                ->andWhere('event.event_name LIKE :event_name')
+                ->setParameter('event_name', "%{$criteria->event_name}%");
+        }
+
+        if (!empty($criteria->start_date)) {
+            $query = $query
+                ->andWhere('event.startDate >= :start_date')
+                ->setParameter('start_date', $criteria->start_date);
+        }
+
+        if (!empty($criteria->end_date)) {
+            $query = $query
+                ->andWhere('event.endDate <= :end_date')
+                ->setParameter('end_date', $criteria->end_date);
+        }
+
+        if (!empty($criteria->is_organizer)) {
+            $query = $query
+                ->andWhere('organizer.id = :organizer')
+                ->setParameter('organizer', $criteria->is_organizer);
+        }
+
+        if (!empty($criteria->is_member)) {
+            $query = $query
+                ->andWhere('members.id = :member')
+                ->setParameter('member', $criteria->is_member);
+        }
+
+        if (!empty($criteria->is_not_member)) {
+            $query = $query
+                ->andWhere('members.id = :member')
+                ->setParameter('member', $criteria->is_not_member);
+        }
+
+        if (empty($criteria->is_passed_event) or !($criteria->is_passed_event)) {
+            $query = $query
+                ->andWhere('event.startDate > :current_date')
+                ->setParameter('current_date', $currentDate);
+        }
+
+        return $query->getQuery()->getResult();
+    }
 }

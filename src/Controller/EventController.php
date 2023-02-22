@@ -108,7 +108,6 @@ class EventController extends AbstractController
      * @Route("/events/{id}/subscribe", name="app_event_inscription", requirements={"id"="\d+"})
      */
     public function addMemberToEvent(Request $request, Event $availableEvent): Response {
-
         $member = $this->getUser()->getProfil();
         $this->eventRepository->addMemberToEvent($availableEvent, $member, true);
         $this->memberRepository->addEventToMember($member, $availableEvent, true);
@@ -116,6 +115,16 @@ class EventController extends AbstractController
         return $this->render('event/detail.html.twig', [
             "availableEvent" => $availableEvent,
             "user" => $member,
+        ]);
+    }
+
+    /**
+     * @Route("/events/new", name="app_event_new", requirements={"id"="\d+"})
+     */
+    public function newEvents(Event $availableEvent): Response
+    {
+        return $this->render('event/detail.html.twig', [
+            "availableEvent" => $availableEvent
         ]);
     }
 }
