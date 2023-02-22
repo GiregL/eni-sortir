@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Entity\Event;
 use App\Entity\User;
+use App\Model\EventState;
 use App\Repository\EventRepository;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -59,12 +60,12 @@ class EventServices
      */
     public function isEventFinished(Event $event): bool
     {
-        return $event->getStartDate()->getTimestamp() + $event->getDuration() < (new \DateTime())->getTimestamp();
+        return $event->getState() === EventState::getFinished();
     }
 
     public function isEventStarted(Event $event): bool
     {
-        return $event->getStartDate()->getTimestamp() < (new \DateTime())->getTimestamp();
+        return $event->getState() === EventState::getOngoing();
     }
 
     /**
@@ -78,7 +79,8 @@ class EventServices
             return false;
         }
 
-        $this->eventRepository->remove($event, true);
+        $event->setState(EventState::getCanceled());
+        $this->eventRepository->flush();                // Persist changes to the database.
         return true;
     }
 
@@ -89,14 +91,25 @@ class EventServices
     public function isEventArchived(Event $event): bool
     {
         $this->logger->info("Appel du service de vérification d'événement archivé pour l'ID {$event->getId()}");
-        if (!$event->getStartDate()) {
+        if (!$event->getState()) {
             return false;
         }
 
-        $now = new \DateTime();
-        $endDate = $event->getStartDate()->getTimestamp() + $event->getDuration();
-        $endedPlusOneMonth = date(strtotime("+1 month", $endDate));
+        return $event->getState() === EventState::getArchived();
+    }
 
-        return $now >= $endedPlusOneMonth;
+    /**
+     * Checks if an event should have the state of Archived.
+     * @param Event $event
+     * @return bool
+     */
+    public function shouldBeArchived(Event $event): bool
+    {
+        $finished = $event->getState() === EventState::getFinished();
+        $finishedTimestamp = $event->getStartDate()->getTimestamp() + $event->getDuration();
+        $nowTimestamp = (new \DateTime())->getTimestamp();
+        $withMonthTimeStamp = strtotime("+1 month", $finishedTimestamp);
+
+        return $finished && ($withMonthTimeStamp <= $nowTimestamp);
     }
 }

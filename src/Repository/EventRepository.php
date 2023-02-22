@@ -124,4 +124,13 @@ class EventRepository extends ServiceEntityRepository
 
         return $query->getQuery()->getResult();
     }
+
+    /**
+     * Flushes the current changes.
+     * Do not use directly.
+     */
+    public function flush(): void
+    {
+        $this->getEntityManager()->flush();
+    }
 }
