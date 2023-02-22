@@ -69,10 +69,8 @@ class EventRepository extends ServiceEntityRepository
         $currentDate = new \DateTime();
 
         $query =  $this->createQueryBuilder('event')
-            ->select('site', 'event', 'members', 'organizer')
-            ->join('event.site', 'site')
-            ->join('event.members', 'members')
-            ->join('event.organizer', 'organizer');
+            ->select('site', 'event')
+            ->join('event.site', 'site');
 
         if (!empty($criteria->site)) {
             $query = $query
@@ -100,19 +98,19 @@ class EventRepository extends ServiceEntityRepository
 
         if (!empty($criteria->is_organizer)) {
             $query = $query
-                ->andWhere('organizer.id = :organizer')
+                ->andWhere('event.organizer.id = :organizer')
                 ->setParameter('organizer', $criteria->is_organizer);
         }
 
         if (!empty($criteria->is_member)) {
             $query = $query
-                ->andWhere('members.id = :member')
+                ->andWhere('event.members.id = :member')
                 ->setParameter('member', $criteria->is_member);
         }
 
         if (!empty($criteria->is_not_member)) {
             $query = $query
-                ->andWhere('members.id = :member')
+                ->andWhere('event.members.id = :member')
                 ->setParameter('member', $criteria->is_not_member);
         }
 
