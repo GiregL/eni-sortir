@@ -3,12 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Event;
-use App\Entity\Site;
 use App\Entity\Member;
 use App\Form\EventType;
+use App\Model\EventState;
 use App\Repository\EventRepository;
 use App\Repository\MemberRepository;
-use App\Repository\SiteRepository;
 use App\Services\EventServices;
 use App\Services\MailerServices;
 use Doctrine\ORM\EntityManagerInterface;
@@ -28,19 +27,16 @@ class EventController extends AbstractController
     private $eventServices;
     private $mailerServices;
     private $eventRepository;
-    private $memberRepository;
 
     public function __construct(LoggerInterface $logger,
                                 EventServices $eventServices,
                                 MailerServices $mailerServices,
-                                EventRepository $eventRepository,
-                                MemberRepository $memberRepository)
+                                EventRepository $eventRepository)
     {
         $this->logger = $logger;
         $this->eventServices = $eventServices;
         $this->mailerServices = $mailerServices;
         $this->eventRepository = $eventRepository;
-        $this->memberRepository = $memberRepository;
     }
 
     /**
@@ -49,7 +45,7 @@ class EventController extends AbstractController
     public function detailEvents(Event $availableEvent): Response
     {
         $user = $this->getUser();
-        
+
         return $this->render('event/detail.html.twig', [
             "availableEvent" => $availableEvent,
             "user" => $user,
@@ -118,25 +114,29 @@ class EventController extends AbstractController
             return $this->redirectToRoute("app_login");
         }
 
-        //verifier si l'evenemnt n'est pas nul
+        //verifier si l'evenement n'est pas nul
         if(!$availableEvent){
             $this->logger->warning("L'évènement est nul.");
             $this->addFlash("error", "Il n'y pas d'évènement en cours");
             return $this->redirectToRoute("app_main");
         }
         //verifier si l'evenement n'est pas cloturé
-        
-        
+        if($availableEvent->getState() == EventState::getClosed() && $availableEvent->getState() != EventState::getOpen()) {
+            $this->logger->warning("L'inscription n'est plus possible, l'évènement est cloturé.");
+            $this->addFlash("error", "L'inscription n'est plus possible, l'évènement est cloturé.");
+            return $this->redirectToRoute("app_main");
+        }
+
         //verifier si il ne participe pas deja a levenement
 
-
         $this->eventRepository->addMemberToEvent($availableEvent, $member, true);
-        $this->memberRepository->addEventToMember($member, $availableEvent, true);
+        //$this->memberRepository->addEventToMember($member, $availableEvent, false);
 
-        return $this->render('event/detail.html.twig', [
+        return $this->redirectToRoute('app_event_detail', ['id' => $availableEvent->getId()]);
+        /*return $this->render('event/detail.html.twig', [
             "availableEvent" => $availableEvent,
             "user" => $member,
-        ]);
+        ]);*/
     }
 
     /**
