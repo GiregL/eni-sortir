@@ -103,12 +103,22 @@ class EventController extends AbstractController
      */
     public function addMemberToEvent(Request $request, Event $availableEvent): Response {
 
-        $user = $this->getUser()->getProfil();
+        $user = $this->getUser()->getProfile();
         $user->addOrganizedEvent($availableEvent);
 
         return $this->render('event/detail.html.twig', [
             "availableEvent" => $availableEvent,
             "user" => $user,
+        ]);
+    }
+
+    /**
+     * @Route("/events/new", name="app_event_new", requirements={"id"="\d+"})
+     */
+    public function newEvents(Event $availableEvent): Response
+    {
+        return $this->render('event/detail.html.twig', [
+            "availableEvent" => $availableEvent
         ]);
     }
 }

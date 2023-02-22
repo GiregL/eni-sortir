@@ -3,31 +3,36 @@
 {% block title %}Hello MainController!{% endblock %}
 
 {% block body %}
-{% include "partials/_header.html.twig" %}
 {% include "partials/_flash.html.twig" %}
 <main class="container">
-    <form action="">
-        <h2>Filtrer les sorties</h2>
-        <div class="grid">
-            <div>
-                <label for="">Site : </label>
-                <select name="" id="">
-                    <option value=""></option>
-                    <option value=""></option>
-                </select>
-                <label for="">Le nom de la sortie contient : </label>
-                <input type="search" name="" id="">
-                <span>Entre <input type="date" name="" id=""> et <input type="date" name="" id=""></span>
-            </div>
-            <fieldset>
-                <label for=""><input type="checkbox" name="" id=""> Sorties dont je suis l'organisateur/trice</label>
-                <label for=""><input type="checkbox" name="" id=""> Sorties auxquelles je suis inscrit/e</label>
-                <label for=""><input type="checkbox" name="" id=""> Sorties auxquelles je ne suis pas inscrit/e</label>
-                <label for=""><input type="checkbox" name="" id=""> Sorties passées</label>
-            </fieldset>
+    {{ form_start(eventFilterForm) }}
+    <h2>Filtrer les sorties</h2>
+
+    <div class="my-custom-class-for-errors">
+        {{ form_errors(eventFilterForm) }}
+    </div>
+
+    <div class="row">
+        <div class="col-xs-5">
+            {{ form_label(eventFilterForm.site) }}
+            {{ form_widget(eventFilterForm.site) }}
+            {{ form_label(eventFilterForm.event_name) }}
+            {{ form_widget(eventFilterForm.event_name) }}
+            <span>Entre {{ form_widget(eventFilterForm.start_date) }} et {{ form_widget(eventFilterForm.end_date) }}</span>
+        </div>
+        <div class="col-xs-5">
+            <div>{{ form_widget(eventFilterForm.is_organizer) }} {{ form_label(eventFilterForm.is_organizer) }}</div>
+            <div>{{ form_widget(eventFilterForm.is_member) }} {{ form_label(eventFilterForm.is_member) }}</div>
+            <div>{{ form_widget(eventFilterForm.is_not_member) }} {{ form_label(eventFilterForm.is_not_member) }}</div>
+            <div>{{ form_widget(eventFilterForm.is_passed_event) }} {{ form_label(eventFilterForm.is_passed_event) }}</div>
+        </div>
+        <div class="col-xs-2" >
             <button type="submit">Rechercher</button>
         </div>
-    </form>
+    </div>
+
+    {{ form_end(eventFilterForm) }}
+
     <table>
         <thead>
             <tr>
@@ -41,7 +46,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for event in availableEvents %}
+            {% for event in event_list %}
             <tr>
                 <td>{{ event.name }}</td>
                 <td>{{ event.startDate | date('m/d/Y') }}</td>
@@ -57,7 +62,7 @@
             {% endfor %}
         </tbody>
     </table>
-    <a href="" role="button">Créer une sortie</a>
+    <a href="{{ path('app_event_new')}}" role="button">Créer une sortie</a>
 </main>
 <footer>
 
