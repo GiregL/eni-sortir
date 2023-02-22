@@ -63,7 +63,7 @@ class EventState
      * @param $identifier string Identifier
      * @return self The variable
      */
-    private static function createOrReturn(self $variable, string $identifier): self
+    private static function createOrReturn(?self $variable, string $identifier): self
     {
         if (!$variable) {
             $variable = new EventState($identifier);

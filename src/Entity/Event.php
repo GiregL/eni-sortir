@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Model\EventState;
 use App\Repository\EventRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -172,15 +173,20 @@ class Event
         return $this;
     }
 
-    public function getState(): ?State
+    public function getState(): ?EventState
     {
-        return $this->state;
+        if ($this->state) {
+            return EventState::fromValue($this->state);
+        } else {
+            return null;
+        }
     }
 
-    public function setState(?State $state): self
+    public function setState(?EventState $state): self
     {
-        $this->state = $state;
-
+        if ($state) {
+            $this->state = $state->getIdentifier();
+        }
         return $this;
     }
 
