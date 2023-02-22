@@ -163,6 +163,11 @@ class ProfileController extends AbstractController
     {
         $user = $this->getUserAndProfile();
 
+        if (!$user) {
+            $this->addFlash("error", "Vous devez être authentifié pour accéder à cette page.");
+            return null;
+        }
+
         return $this->render('profile/detail.html.twig', [
             "profilOrganizer" => $profilOrganizer,
             "user" => $user,

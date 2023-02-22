@@ -78,6 +78,15 @@ class MemberRepository extends ServiceEntityRepository
         }
     }
 
+    public function addEventToMember(Member $entity, Event $event, bool $flush = false): void {
+
+        $entity->addOrganizedEvent($event);
+
+        if($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
 //    /**
 //     * @return Member[] Returns an array of Member objects
 //     */
