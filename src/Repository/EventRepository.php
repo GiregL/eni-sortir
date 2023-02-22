@@ -4,7 +4,6 @@ namespace App\Repository;
 
 use App\Data\EventFilterData;
 use App\Entity\Event;
-use App\Entity\User;
 use App\Entity\Member;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -82,7 +81,7 @@ class EventRepository extends ServiceEntityRepository
 
         if (!empty($criteria->event_name)) {
             $query = $query
-                ->andWhere('event.event_name LIKE :event_name')
+                ->andWhere('event.name LIKE :event_name')
                 ->setParameter('event_name', "%{$criteria->event_name}%");
         }
 
@@ -94,7 +93,7 @@ class EventRepository extends ServiceEntityRepository
 
         if (!empty($criteria->end_date)) {
             $query = $query
-                ->andWhere('event.endDate <= :end_date')
+                ->andWhere('event.startDate + event.duration <= :end_date')
                 ->setParameter('end_date', $criteria->end_date);
         }
 
