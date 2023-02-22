@@ -25,14 +25,20 @@ class EventController extends AbstractController
     private $logger;
     private $eventServices;
     private $mailerServices;
+    private $eventRepository;
+    private $memberRepository;
 
     public function __construct(LoggerInterface $logger,
                                 EventServices $eventServices,
-                                MailerServices $mailerServices)
+                                MailerServices $mailerServices,
+                                EventRepository $eventRepository,
+                                MemberRepository $memberRepository)
     {
         $this->logger = $logger;
         $this->eventServices = $eventServices;
         $this->mailerServices = $mailerServices;
+        $this->eventRepository = $eventRepository;
+        $this->memberRepository = $memberRepository;
     }
 
     /**
@@ -103,12 +109,13 @@ class EventController extends AbstractController
      */
     public function addMemberToEvent(Request $request, Event $availableEvent): Response {
 
-        $user = $this->getUser()->getProfil();
-        $user->addOrganizedEvent($availableEvent);
+        $member = $this->getUser()->getProfil();
+        $this->eventRepository->addMemberToEvent($availableEvent, $member, true);
+        $this->memberRepository->addEventToMember($member, $availableEvent, true);
 
         return $this->render('event/detail.html.twig', [
             "availableEvent" => $availableEvent,
-            "user" => $user,
+            "user" => $member,
         ]);
     }
 }

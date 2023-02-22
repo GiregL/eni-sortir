@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Event;
+use App\Entity\User;
+use App\Entity\Member;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Persistence\ManagerRegistry;
@@ -27,6 +29,15 @@ class EventRepository extends ServiceEntityRepository
         $this->getEntityManager()->persist($entity);
 
         if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    public function addMemberToEvent(Event $entity, Member $member, bool $flush = false): void {
+
+        $entity->addMember($member);
+
+        if($flush) {
             $this->getEntityManager()->flush();
         }
     }
