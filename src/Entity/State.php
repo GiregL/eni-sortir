@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Model\EventState;
 use App\Repository\StateRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -79,5 +80,13 @@ class State
         }
 
         return $this;
+    }
+
+    /**
+     * Computes the event state as an enum.
+     */
+    public function getEventState(): EventState
+    {
+        return EventState::fromValue($this->getLabel());
     }
 }
