@@ -64,13 +64,15 @@ class EventRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findFilteredEvents(EventFilterData $criteria, int $user): array
+    public function findFilteredEvents(EventFilterData $criteria, int $member): array
     {
         $currentDate = new \DateTime();
 
         $query =  $this->createQueryBuilder('event')
-            ->select('site', 'event')
-            ->join('event.site', 'site');
+            ->select('event')
+            ->join('event.site', 'site')
+            ->join('event.organizer', 'organizer')
+            ->join('event.members', 'members');
 
         if (!empty($criteria->site)) {
             $query = $query
@@ -98,20 +100,20 @@ class EventRepository extends ServiceEntityRepository
 
         if (!empty($criteria->is_organizer)) {
             $query = $query
-                ->andWhere('event.organizer.user.id = :organizer')
-                ->setParameter('organizer', $user);
+                ->andWhere('organizer.id = :organizer')
+                ->setParameter('organizer', $member);
         }
 
         if (!empty($criteria->is_member)) {
             $query = $query
-                ->andWhere('event.members.user.id = :member')
-                ->setParameter('member', $user);
+                ->andWhere('members.id = :member')
+                ->setParameter('member', $member);
         }
 
         if (!empty($criteria->is_not_member)) {
             $query = $query
-                ->andWhere('event.members.user.id = :member')
-                ->setParameter('member', $user);
+                ->andWhere('members.id = :member')
+                ->setParameter('member', $member);
         }
 
         if (empty($criteria->is_passed_event) or !($criteria->is_passed_event)) {
