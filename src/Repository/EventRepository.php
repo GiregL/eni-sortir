@@ -64,7 +64,7 @@ class EventRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findFilteredEvents(EventFilterData $criteria): array
+    public function findFilteredEvents(EventFilterData $criteria, int $user): array
     {
         $currentDate = new \DateTime();
 
@@ -98,20 +98,20 @@ class EventRepository extends ServiceEntityRepository
 
         if (!empty($criteria->is_organizer)) {
             $query = $query
-                ->andWhere('event.organizer.id = :organizer')
-                ->setParameter('organizer', $criteria->is_organizer);
+                ->andWhere('event.organizer.user.id = :organizer')
+                ->setParameter('organizer', $user);
         }
 
         if (!empty($criteria->is_member)) {
             $query = $query
-                ->andWhere('event.members.id = :member')
-                ->setParameter('member', $criteria->is_member);
+                ->andWhere('event.members.user.id = :member')
+                ->setParameter('member', $user);
         }
 
         if (!empty($criteria->is_not_member)) {
             $query = $query
-                ->andWhere('event.members.id = :member')
-                ->setParameter('member', $criteria->is_not_member);
+                ->andWhere('event.members.user.id = :member')
+                ->setParameter('member', $user);
         }
 
         if (empty($criteria->is_passed_event) or !($criteria->is_passed_event)) {
