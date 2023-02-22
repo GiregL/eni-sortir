@@ -28,9 +28,14 @@ class MainController extends AbstractController
         $eventFilter = new EventFilterData();
         $form = $this->createForm(EventFilterFormType::class, $eventFilter);
         $form->handleRequest($request);
+        $currentMemberId = -1;
+        if($this->getUser()) 
+        {
+            $currentMemberId = $this->getUser()->getProfil()->getId();
+        }
 
         // Getting all current events
-        $event_list = $this->eventRepository->findFilteredEvents($eventFilter, $this->getUser()->getId());
+        $event_list = $this->eventRepository->findFilteredEvents($eventFilter, $currentMemberId);
 
         return $this->render('main/index.html.twig', [
             "eventFilterForm" => $form->createView(),

@@ -4,12 +4,13 @@ namespace App\Controller;
 
 use App\Entity\Event;
 use App\Entity\Member;
+use App\Form\EventType;
 use App\Model\EventState;
 use App\Repository\EventRepository;
 use App\Repository\MemberRepository;
 use App\Services\EventServices;
 use App\Services\MailerServices;
-use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -139,12 +140,24 @@ class EventController extends AbstractController
     }
 
     /**
-     * @Route("/events/new", name="app_event_new", requirements={"id"="\d+"})
+     * @Route("/events/new", name="app_event_new", methods={"GET", "POST"})
      */
-    public function newEvents(Event $availableEvent): Response
+    public function newEvent(Request $request, EntityManagerInterface $entityManager): Response
     {
-        return $this->render('event/detail.html.twig', [
-            "availableEvent" => $availableEvent
+        $event = new Event();
+        $form = $this->createForm(EventType::class, $event);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($event);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_events_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('event/new.html.twig', [
+            'event' => $event,
+            'form' => $form,
         ]);
     }
 }

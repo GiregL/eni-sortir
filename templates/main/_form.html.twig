@@ -1,0 +1,27 @@
+{{ form_start(eventFilterForm) }}
+<h2>Filtrer les sorties</h2>
+
+<div class="my-custom-class-for-errors">
+    {{ form_errors(eventFilterForm) }}
+</div>
+
+<div class="row">
+    <div class="col-xs-5">
+        {{ form_label(eventFilterForm.site) }}
+        {{ form_widget(eventFilterForm.site) }}
+        {{ form_label(eventFilterForm.event_name) }}
+        {{ form_widget(eventFilterForm.event_name) }}
+        <span>Entre {{ form_widget(eventFilterForm.start_date) }} et {{ form_widget(eventFilterForm.end_date) }}</span>
+    </div>
+    <div class="col-xs-5">
+        <div>{{ form_widget(eventFilterForm.is_organizer) }} {{ form_label(eventFilterForm.is_organizer) }}</div>
+        <div>{{ form_widget(eventFilterForm.is_member) }} {{ form_label(eventFilterForm.is_member) }}</div>
+        <div>{{ form_widget(eventFilterForm.is_not_member) }} {{ form_label(eventFilterForm.is_not_member) }}</div>
+        <div>{{ form_widget(eventFilterForm.is_passed_event) }} {{ form_label(eventFilterForm.is_passed_event) }}</div>
+    </div>
+    <div class="col-xs-2" >
+        <button type="submit">{{ button_label|default('Rechercher') }}</button>
+    </div>
+</div>
+
+{{ form_end(eventFilterForm) }}
