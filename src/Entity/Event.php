@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Model\EventState;
 use App\Repository\EventRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -54,6 +55,11 @@ class Event
      * @ORM\JoinColumn(nullable=false)
      */
     private $place;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $state;
 
     /**
      * @ORM\ManyToOne(targetEntity=Site::class, inversedBy="events")
@@ -163,6 +169,23 @@ class Event
     {
         $this->place = $place;
 
+        return $this;
+    }
+
+    public function getState(): ?EventState
+    {
+        if ($this->state) {
+            return EventState::fromValue($this->state);
+        } else {
+            return null;
+        }
+    }
+
+    public function setState(?EventState $state): self
+    {
+        if ($state) {
+            $this->state = $state->getIdentifier();
+        }
         return $this;
     }
 

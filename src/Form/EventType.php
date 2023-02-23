@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\City;
 use App\Entity\Event;
 use App\Entity\Place;
 use App\Entity\Site;
@@ -41,17 +42,22 @@ class EventType extends AbstractType
             ->add('eventInfos', TextType::class, [
                 'label' => 'Description et Infos : ',
             ])
-
             ->add('place', EntityType::class, [
                 'label' => 'Place : ',
                 'class' => Place::class,
                 'choice_label' => 'name',
             ])
-            ->add('site', EntityType::class, [
-                'label' => 'Site : ',
-                'class' => Site::class,
-                'choice_label' => 'name',
-            ])
+            // ->add('city', EntityType::class, [
+            //     'label' => 'Ville : ',
+            //     'class' => City::class,
+            //     'choice_label' => 'name'
+            // ])
+            // ->add('site', EntityType::class, [
+            //     'label' => 'Site : ',
+            //     'class' => Site::class,
+            //     'choice_label' => 'name',
+            //     'attr' => ['readonly' => true]
+            // ])
         ;
     }
 

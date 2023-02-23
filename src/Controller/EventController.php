@@ -215,6 +215,8 @@ class EventController extends AbstractController
         $member = $this->getUser()->getProfil();
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
+        $event->setState(EventState::getCreating());
+        $event->setSite($member->getSite());
         $event->setOrganizer($member);
 
         if ($form->isSubmitted() && $form->isValid()) {
