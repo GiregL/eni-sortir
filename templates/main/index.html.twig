@@ -13,7 +13,6 @@
                 <th scope="col">Nom de la sortie</th>
                 <th scope="col">Date de la sortie</th>
                 <th scope="col">Clôture</th>
-                <th scope="col">Etat</th>
                 <th scope="col">Inscrit</th>
                 <th scope="col">Organisateur</th>
                 <th scope="col">Actions</th>
@@ -25,7 +24,6 @@
                 <td>{{ event.name }}</td>
                 <td>{{ event.startDate | date('m/d/Y') }}</td>
                 <td>{{ event.dateLimitRegister|date('m/d/Y') }}</td>
-                <td>{{ event.state.label }}</td>
                 <td>{{ event.maxRegister }}</td>
                 <td><a href="{{ path('app_profile_detail_id',{id:event.organizer.id}) }}">{{ event.organizer.name }}</a>
                 <td><a href="{{ path('app_event_detail',{id:event.id}) }}">Afficher - </a>

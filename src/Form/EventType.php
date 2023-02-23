@@ -39,7 +39,7 @@ class EventType extends AbstractType
                 'label' => 'Durée : ',
             ])
             ->add('eventInfos', TextType::class, [
-                'label' => 'Durée : ',
+                'label' => 'Description et Infos : ',
             ])
 
             ->add('place', EntityType::class, [

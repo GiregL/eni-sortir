@@ -78,9 +78,9 @@ class EventRepository extends ServiceEntityRepository
 
         $query =  $this->createQueryBuilder('event')
             ->select('event')
-            ->join('event.site', 'site')
-            ->join('event.organizer', 'organizer')
-            ->join('event.members', 'members');
+            ->leftjoin('event.site', 'site')
+            ->leftjoin('event.organizer', 'organizer')
+            ->leftjoin('event.members', 'members');
 
         if (!empty($criteria->site)) {
             $query = $query
