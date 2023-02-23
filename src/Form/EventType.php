@@ -9,8 +9,10 @@ use App\Entity\Site;
 use App\Entity\State;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -47,17 +49,14 @@ class EventType extends AbstractType
                 'class' => Place::class,
                 'choice_label' => 'name',
             ])
-            // ->add('city', EntityType::class, [
-            //     'label' => 'Ville : ',
-            //     'class' => City::class,
-            //     'choice_label' => 'name'
-            // ])
-            // ->add('site', EntityType::class, [
-            //     'label' => 'Site : ',
-            //     'class' => Site::class,
-            //     'choice_label' => 'name',
-            //     'attr' => ['readonly' => true]
-            // ])
+            ->add('publish', HiddenType::class, [
+                'attr' => [
+                    'id' => 'publish',
+                    'value' => 'false'
+                ],
+                'mapped' => false
+            ])
+            ->add('publishEvent', HiddenType::class, ['mapped' => false])
         ;
     }
 

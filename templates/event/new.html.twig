@@ -7,7 +7,13 @@
 <main class="container">
     <h1>Create new Event</h1>
 
-    {{ include('event/_form.html.twig') }}
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <div class="container">
+        <button class="btn">{{ button_label|default('Save') }}</button>
+        <input type="submit"  id='publishEvent' name="publishEvent" role="button" value="Publier">
+    </div>
+    {{ form_end(form) }}
 
     <a href="{{ path('app_main') }}">back to home</a>
     </main>
@@ -15,3 +21,13 @@
 
 </footer>
 {% endblock %}
+
+{%  block javascripts %}
+<script>
+document.querySelector("#publishEvent").addEventListener("click", function(event) {
+    let publishedEvent = document.querySelector('#publish').value = true;
+    console.log(publishedEvent);
+  
+}, false);
+</script>
+{% endblock %} 

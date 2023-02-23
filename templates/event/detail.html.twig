@@ -39,7 +39,7 @@
                 <input type="text" value="{{ availableEvent.place.city.postCode }}" readonly>
             </div>
             <div class="grid col-xs-6">
-                <p>Durée</p>
+                <p>Durée (minutes)</p>
                 <input type="text" value="{{ availableEvent.duration }}" readonly>
             </div>
             <div class="grid col-xs-6">
@@ -56,7 +56,7 @@
             </div>
         </div>
     </div>
-{# 
+
    <table>
         <thead>
             <tr>
@@ -65,21 +65,14 @@
             </tr>
         </thead>
         <tbody>
-            {% for event in event_list %}
+            {% for member in memberInEvent %}
             <tr>
-                <td>{{ event }}</td>
-                <td>{{ event.startDate | date('m/d/Y') }}</td>
+                <td>{{ member.user.username|capitalize }}</td>
+                <td>{{ member.firstName|capitalize }} {{ member.name|upper }}</td>
             </tr>
             {% endfor %}
         </tbody>
-    </table> #}
+    </table>
 
 {% endblock %}
-{% block stylesheet %}
-.wrapper {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 10px;
-  grid-auto-rows: minmax(100px, auto);
-}
-{% endblock %}
+

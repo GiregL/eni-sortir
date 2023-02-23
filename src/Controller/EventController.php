@@ -11,6 +11,7 @@ use App\Repository\EventRepository;
 use App\Repository\MemberRepository;
 use App\Services\EventServices;
 use App\Services\MailerServices;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -33,8 +34,7 @@ class EventController extends AbstractController
     public function __construct(LoggerInterface $logger,
                                 EventServices $eventServices,
                                 MailerServices $mailerServices,
-                                EventRepository $eventRepository,
-                                )
+                                EventRepository $eventRepository)
     {
         $this->logger = $logger;
         $this->eventServices = $eventServices;
@@ -48,12 +48,12 @@ class EventController extends AbstractController
     public function detailEvents(Event $availableEvent): Response
     {
         $user = $this->getUser();
-        $event_list = $this->eventRepository->findAllAvailableEvents();
+        $memberInEvent = $availableEvent->getMembers();
 
         return $this->render('event/detail.html.twig', [
             "availableEvent" => $availableEvent,
             "user" => $user,
-            "event_list" => $event_list
+            "memberInEvent" => $memberInEvent
         ]);
     }
 
@@ -110,7 +110,7 @@ class EventController extends AbstractController
     /**
      * @Route("/events/{id}/subscribe", name="app_event_inscription", requirements={"id"="\d+"})
      */
-    public function addMemberToEvent(Request $request, Event $availableEvent,): Response {
+    public function addMemberToEvent(Request $request, Event $availableEvent): Response {
         $user = $this->getUser();
 
         if (!$user) {
@@ -219,7 +219,14 @@ class EventController extends AbstractController
         $member = $this->getUser()->getProfil();
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
-        $event->setState(EventState::getCreating());
+        $publishedEvent = $form['publish']->getData();
+        // dd($publishedEvent);
+        if($publishedEvent == false) {
+            $event->setState(EventState::getCreating());
+        }
+        if($publishedEvent){
+            $event->setState(EventState::getOpen());    
+        }
         $event->setSite($member->getSite());
         $event->setOrganizer($member);
 

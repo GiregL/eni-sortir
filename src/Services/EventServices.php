@@ -146,4 +146,22 @@ class EventServices
             return false;
         }
     }
+
+    /**
+     * Publish an event
+     */
+    public function publishEvent(Event $event, Member $member) {
+
+        $event->setState(EventState::getOpen());
+    }
+
+    public function isPublished(Event $event): bool
+    {
+        return in_array($event->getState(), [
+            EventState::getOpen(),
+            EventState::getClosed(),
+            EventState::getOngoing(),
+            EventState::getFinished()
+        ]);
+    }
 }
