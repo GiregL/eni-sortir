@@ -102,7 +102,7 @@ class EventRepository extends ServiceEntityRepository
 
         if (!empty($criteria->end_date)) {
             $query = $query
-                ->andWhere('event.startDate + event.duration <= :end_date')
+                ->andWhere("DATE_ADD(event.startDate, event.duration, 'MINUTE') <= :end_date")
                 ->setParameter('end_date', $criteria->end_date);
         }
 

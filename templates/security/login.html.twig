@@ -3,6 +3,8 @@
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
+{% include "partials/_flash.html.twig" %}
+<main class="container">
 <form method="post">
     {% if error %}
         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -35,5 +37,9 @@
         Sign in
     </button>
 </form>
+</main>
+<footer>
+
+</footer>
 {% include "partials/_flash.html.twig" %}
 {% endblock %}

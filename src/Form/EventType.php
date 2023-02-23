@@ -47,11 +47,6 @@ class EventType extends AbstractType
                 'class' => Place::class,
                 'choice_label' => 'name',
             ])
-            ->add('state', EntityType::class, [
-                'label' => 'State : ',
-                'class' => State::class,
-                'choice_label' => 'label',
-            ])
             ->add('site', EntityType::class, [
                 'label' => 'Site : ',
                 'class' => Site::class,

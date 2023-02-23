@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Data\EventFilterData;
+use App\Entity\User;
 use App\Form\EventFilterFormType;
 use App\Repository\EventRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -29,7 +30,7 @@ class MainController extends AbstractController
         $form = $this->createForm(EventFilterFormType::class, $eventFilter);
         $form->handleRequest($request);
         $currentMemberId = -1;
-        if($this->getUser()) 
+        if($this->getUser() && $this->getUser() instanceof User && $this->getUser()->getProfil()) 
         {
             $currentMemberId = $this->getUser()->getProfil()->getId();
         }

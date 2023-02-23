@@ -3,6 +3,8 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
+{% include "partials/_flash.html.twig" %}
+<main class="container">
     <h1>S'enregistrer</h1>
 
     {{ form_start(registrationForm) }}
@@ -16,4 +18,8 @@
 
         <button type="submit" class="btn">S'enregistrer</button>
     {{ form_end(registrationForm) }}
+    </main>
+<footer>
+
+</footer>
 {% endblock %}
