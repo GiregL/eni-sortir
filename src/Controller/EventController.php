@@ -33,7 +33,8 @@ class EventController extends AbstractController
     public function __construct(LoggerInterface $logger,
                                 EventServices $eventServices,
                                 MailerServices $mailerServices,
-                                EventRepository $eventRepository)
+                                EventRepository $eventRepository,
+                                )
     {
         $this->logger = $logger;
         $this->eventServices = $eventServices;
@@ -47,10 +48,12 @@ class EventController extends AbstractController
     public function detailEvents(Event $availableEvent): Response
     {
         $user = $this->getUser();
+        $event_list = $this->eventRepository->findAllAvailableEvents();
 
         return $this->render('event/detail.html.twig', [
             "availableEvent" => $availableEvent,
             "user" => $user,
+            "event_list" => $event_list
         ]);
     }
 
@@ -107,7 +110,7 @@ class EventController extends AbstractController
     /**
      * @Route("/events/{id}/subscribe", name="app_event_inscription", requirements={"id"="\d+"})
      */
-    public function addMemberToEvent(Request $request, Event $availableEvent): Response {
+    public function addMemberToEvent(Request $request, Event $availableEvent,): Response {
         $user = $this->getUser();
 
         if (!$user) {
@@ -152,7 +155,8 @@ class EventController extends AbstractController
         }
 
         $this->eventRepository->addMemberToEvent($availableEvent, $member, true);
-        //$this->memberRepository->addEventToMember($member, $availableEvent, false);
+        // $this->memberRepository->addEventToMember($member, $availableEvent, false);
+        $this->addFlash("success", "Vous vous êtes bien enregistré à l'évènement");
 
         return $this->redirectToRoute('app_event_detail', ['id' => $availableEvent->getId()]);
         /*return $this->render('event/detail.html.twig', [

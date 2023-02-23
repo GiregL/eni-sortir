@@ -69,9 +69,7 @@ class EventServices
      */
     public function isEventSubscribtionClosed(Event $event): bool
     {
-        return $event->getState() !== EventState::getClosed()
-            && $event->getState() !== EventState::getArchived()
-            && $event->getState() !== EventState::getCanceled();
+        return $event->getState() === EventState::getOpen();
     }
 
     /**

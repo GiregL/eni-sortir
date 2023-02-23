@@ -40,7 +40,7 @@ class MainController extends AbstractController
 
         return $this->render('main/index.html.twig', [
             "eventFilterForm" => $form->createView(),
-            "event_list" => $event_list,
+            "event_list" => $event_list
         ]);
     }
 }

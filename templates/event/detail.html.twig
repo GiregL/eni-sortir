@@ -56,12 +56,23 @@
             </div>
         </div>
     </div>
-
-
-    <form action="{{ path('app_event_cancel', {"id": availableEvent.id}) }}" method="post">
-        <input type="hidden" name="token" id="token" value="{{ csrf_token('cancel-event-' ~ availableEvent.id) }}">
-        <button type="submit" onclick="confirm('Voulez-vous vraiment annuler cet événement ?')">Annuler</button>
-    </form>
+{# 
+   <table>
+        <thead>
+            <tr>
+                <th scope="col">Pseudo</th>
+                <th scope="col">Nom</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for event in event_list %}
+            <tr>
+                <td>{{ event }}</td>
+                <td>{{ event.startDate | date('m/d/Y') }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table> #}
 
 {% endblock %}
 {% block stylesheet %}

@@ -43,7 +43,7 @@ class EventRepository extends ServiceEntityRepository
 
     public function removeMemberFromEvent(Event $event, Member $member, bool $flush = false): bool
     {
-        $result = $event->getMembers()->removeElement($event);
+        $result = $event->getMembers()->removeElement($member);
         if ($flush) {
             $this->getEntityManager()->flush();
         }
