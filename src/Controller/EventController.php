@@ -3,12 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Event;
-use App\Entity\Member;
 use App\Entity\User;
 use App\Form\EventType;
 use App\Model\EventState;
 use App\Repository\EventRepository;
-use App\Repository\MemberRepository;
 use App\Services\EventServices;
 use App\Services\MailerServices;
 use Doctrine\ORM\EntityManager;
@@ -34,7 +32,8 @@ class EventController extends AbstractController
     public function __construct(LoggerInterface $logger,
                                 EventServices $eventServices,
                                 MailerServices $mailerServices,
-                                EventRepository $eventRepository)
+                                EventRepository $eventRepository
+                                )
     {
         $this->logger = $logger;
         $this->eventServices = $eventServices;
@@ -159,10 +158,6 @@ class EventController extends AbstractController
         $this->addFlash("success", "Vous vous êtes bien enregistré à l'évènement");
 
         return $this->redirectToRoute('app_event_detail', ['id' => $availableEvent->getId()]);
-        /*return $this->render('event/detail.html.twig', [
-            "availableEvent" => $availableEvent,
-            "user" => $member,
-        ]);*/
     }
 
     /**
@@ -215,8 +210,29 @@ class EventController extends AbstractController
      */
     public function newEvent(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
+
+        if (!$user) {
+            $this->logger->info("Tentative de création d'un event par un utilisateur non authentifié.");
+            $this->addFlash("error", "Vous devez être authentifié pour faire cette action.");
+            return $this->redirectToRoute("app_login");
+        }
+
+        if (!($user instanceof User)) {
+            $this->logger->warning("L'utilisateur n'est pas une instance de l'entité User.");
+            $this->addFlash("error", "Une erreur interne est survenue, ce service n'est pas disponible.");
+            return $this->redirectToRoute("app_main");
+        }
+
+        $member = $user->getProfil();
+
+        if (!$member) {
+            $this->logger->warning("L'utilisateur {$user->getId()} n'a pas de profil associé.");
+            $this->addFlash("error", "Une erreur interne est survenue, veuillez contacter l'administrateur de la plateforme.");
+            return $this->redirectToRoute("app_main");
+        }
+
         $event = new Event();
-        $member = $this->getUser()->getProfil();
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
         $publishedEvent = $form['publish']->getData();
@@ -239,7 +255,7 @@ class EventController extends AbstractController
 
         return $this->renderForm('event/new.html.twig', [
             'event' => $event,
-            'form' => $form,
+            'form' => $form
         ]);
     }
 }

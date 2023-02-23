@@ -123,7 +123,8 @@ class EventServices
     public function shouldBeArchived(Event $event): bool
     {
         $finished = $event->getState() === EventState::getFinished();
-        $finishedTimestamp = $event->getStartDate()->getTimestamp() + $event->getDuration();
+        $finishedTimestamp = date_modify($event->getStartDate(), "+{$event->getDuration()} minutes")->getTimestamp();
+
         $nowTimestamp = (new \DateTime())->getTimestamp();
         $withMonthTimeStamp = strtotime("+1 month", $finishedTimestamp);
 
