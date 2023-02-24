@@ -6,7 +6,7 @@
 
     {% include 'partials/_flash.html.twig' %}
 
-    <main class="container">
+    <main class="container" id="maincontent">
         <h1>Mon profil</h1>
         <form action="{{ path("app_profile_updateprofile") }}" method="post">
             {{ form_start(updateForm) }}
