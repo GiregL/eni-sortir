@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Data\EventFilterData;
+use App\Data\EventFilterModel;
 use App\Entity\Event;
 use App\Entity\Member;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -72,7 +72,7 @@ class EventRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findFilteredEvents(EventFilterData $criteria, int $member): array
+    public function findFilteredEvents(EventFilterModel $criteria, int $member): array
     {
         $currentDate = new \DateTime();
 

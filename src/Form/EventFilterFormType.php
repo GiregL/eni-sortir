@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Data\EventFilterData;
+use App\Data\EventFilterModel;
 use App\Entity\Site;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -65,7 +65,7 @@ class EventFilterFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => EventFilterData::class,
+            'data_class' => EventFilterModel::class,
             'method' => 'GET',
             'csrf_protection' => false
         ]);
