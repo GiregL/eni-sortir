@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Event;
 use App\Entity\User;
+use App\Form\CancelEventFormType;
 use App\Form\EventType;
+use App\Model\CancelEventModel;
 use App\Model\EventState;
 use App\Repository\EventRepository;
 use App\Services\EventServices;
@@ -53,6 +55,60 @@ class EventController extends AbstractController
             "availableEvent" => $availableEvent,
             "user" => $user,
             "memberInEvent" => $memberInEvent
+        ]);
+    }
+
+    /**
+     * @Route("/events/{id}/cancel", name="app_event_cancel_show", requirements={"id" = "\d+", methods={"GET"}}
+     */
+    public function showCancelEvent(Event $event, Request $request): Response
+    {
+        $this->logger->info("Accès à la page d'annulation de l'événement {$event->getId()}");
+
+        if ($event->getId() === null) {
+            $this->logger->warning("L'événement fourni est invalide.");
+            $this->addFlash("error", "L'événement fourni n'existe pas ou plus.");
+            return $this->redirectToRoute("app_main");
+        }
+
+        if (!$this->getUser()) {
+            $this->logger->warning("Utilisateur non authentifié sur la plateforme.");
+            $this->addFlash("error", "Vous devez être authentifié sur la plateforme pour accéder à cette fonctionnalité.");
+            return $this->redirectToRoute("app_login");
+        }
+
+        if (!($this->getUser() instanceof User)) {
+            $this->logger->warning("L'utilisateur n'est pas une instance de App\Entity\User.");
+            $this->addFlash("error", "Une erreur interne est survenue, ce service n'est pas disponible pour le moment.");
+            return $this->redirectToRoute("app_main");
+        }
+
+        $profile = $this->getUser()->getProfil();
+
+        if (!$profile) {
+            $this->logger->warning("L'utilisateur courant n'a pas de profil associé.");
+            $this->addFlash("error", "Une erreur interne est survenue, ce service n'est pas disponible pour le moment.");
+            return $this->redirectToRoute("app_main");
+        }
+
+        if (!$this->eventServices->isUserOrganizerOfEvent($this->getUser(), $event)) {
+            $this->logger->info("Tentative d'annulation de l'événement {$event->getId()} par l'utilisateur non organisateur {$this->getUser()->getUsername()}");
+            $this->addFlash("error", "Vous n'avez pas la permission d'annuler un événement dont vous n'êtes pas l'organisateur.");
+            return $this->redirectToRoute("app_main");
+        }
+
+        if (EventState::isFinished($event->getState())) {
+            $this->logger->info("Annulation d'un événement déjà terminé.");
+            $this->addFlash("error", "Vous ne pouvez pas annuler un événement déjà terminé.");
+            return $this->redirectToRoute("app_event_detail", ["id" => $event->getId()]);
+        }
+
+        $cancelFormData = new CancelEventModel();
+        $cancelFormData->setEventId($event->getId());
+        $cancelForm = $this->createForm(CancelEventFormType::class, $cancelFormData);
+
+        return $this->render("event/cancel.html.twig", [
+            "cancelForm" => $cancelForm->createView()
         ]);
     }
 

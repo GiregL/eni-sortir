@@ -79,6 +79,14 @@ class EventState
         return $eventState == self::getOpen() || $eventState == self::getClosed();
     }
 
+    public static function isFinished(self $eventState): bool
+    {
+        return in_array($eventState, [
+            EventState::getFinished(),
+            EventState::getArchived()
+        ]);
+    }
+
     /**
      * Returns all the possible states.
      */
