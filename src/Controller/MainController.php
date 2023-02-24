@@ -2,8 +2,7 @@
 
 namespace App\Controller;
 
-use App\Data\EventFilterData;
-use App\Entity\Event;
+use App\Data\EventFilterModel;
 use App\Entity\User;
 use App\Form\EventFilterFormType;
 use App\Repository\EventRepository;
@@ -31,10 +30,12 @@ class MainController extends AbstractController
      */
     public function index(Request $request, Environment $twig): Response
     {
-        $eventFilter = new EventFilterData();
+        $eventFilter = new EventFilterModel();
         $form = $this->createForm(EventFilterFormType::class, $eventFilter);
         $form->handleRequest($request);
+        
         $currentMemberId = -1;
+
         if($this->getUser() && $this->getUser() instanceof User && $this->getUser()->getProfil()) 
         {
             $currentMemberId = $this->getUser()->getProfil()->getId();
@@ -45,8 +46,8 @@ class MainController extends AbstractController
         $twig->addFunction(new TwigFunction("isUserRegisteredOnEvent", function($event, $member) {
             return $this->eventServices->isUserRegisteredOnEvent($event, $member);
         }));
-        $twig->addFunction(new TwigFunction("isPublish", function($event) {
-            return $this->eventServices->isPublished($event);
+        $twig->addFunction(new TwigFunction("isUserOrganizerOfEvent", function ($user, $event) {
+            return $this->eventServices->isUserOrganizerOfEvent($user, $event);
         }));
 
         return new Response($twig->render('main/index.html.twig', [

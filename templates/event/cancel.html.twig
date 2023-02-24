@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <h1>Annuler un événement</h1>
+
+    {{ form_start(cancelForm) }}
+        <input type="hidden" name="token" value="{{ csrf_token('cancel-event-' ~ eventId) }}">
+        {{ form_row(cancelForm.eventId) }}
+
+        {{ form_label(cancelForm.cancelMessage) }}
+        {{ form_widget(cancelForm.cancelMessage) }}
+    {{ form_end(cancelForm) }}
+
+{% endblock %}
