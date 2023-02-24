@@ -4,7 +4,7 @@
 
 {% block body %}
     {% include 'partials/_flash.html.twig' %}
-    <div class="container">
+    <div class="container" id="maincontent">
         <div class="row"> 
             <div class="grid col-xs-6">
                 <p>Nom de la sortie</p>
@@ -57,22 +57,25 @@
         </div>
     </div>
 
-   <table>
-        <thead>
-            <tr>
-                <th scope="col">Pseudo</th>
-                <th scope="col">Nom</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for member in memberInEvent %}
-            <tr>
-                <td>{{ member.user.username|capitalize }}</td>
-                <td>{{ member.firstName|capitalize }} {{ member.name|upper }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <h3> Liste des participants Inscrits </h3>
 
+    <div class="container">
+        <table>
+            <thead>
+                <tr>
+                    <th scope="col">Pseudo</th>
+                    <th scope="col">Nom</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for member in memberInEvent %}
+                <tr>
+                    <td>{{ member.user.username|capitalize }}</td>
+                    <td>{{ member.firstName|capitalize }} {{ member.name|upper }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}
 

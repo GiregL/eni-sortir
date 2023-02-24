@@ -4,14 +4,14 @@
 
 {% block body %}
 {% include "partials/_flash.html.twig" %}
-<main class="container">
+<main class="container" id="maincontent">
     <h1>Create new Event</h1>
 
     {{ form_start(form) }}
     {{ form_widget(form) }}
     <div class="container">
         <button class="btn">{{ button_label|default('Save') }}</button>
-        <input type="submit"  id='publishEvent' name="publishEvent" role="button" value="Publier">
+        <input type="submit" id='publishEvent' name="publishEvent" role="button" value="Publier">
     </div>
     {{ form_end(form) }}
 
@@ -24,10 +24,8 @@
 
 {%  block javascripts %}
 <script>
-document.querySelector("#publishEvent").addEventListener("click", function(event) {
+document.querySelector("#publishEvent").addEventListener("click", function(e) {
     let publishedEvent = document.querySelector('#publish').value = true;
-    console.log(publishedEvent);
-  
 }, false);
 </script>
 {% endblock %} 

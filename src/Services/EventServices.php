@@ -151,8 +151,8 @@ class EventServices
     /**
      * Publish an event
      */
-    public function publishEvent(Event $event, Member $member) {
-
+    public function publishEvent(Event $event) {
+        
         $event->setState(EventState::getOpen());
     }
 

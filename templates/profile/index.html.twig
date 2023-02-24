@@ -4,10 +4,10 @@
 
 {% block body %}
 
-    {% include 'partials/_flash.html.twig' %}
 
-    <main class="container">
-        <h1>Mon profil</h1>
+<main class="container" id="maincontent">
+        {% include 'partials/_flash.html.twig' %}
+        <h2>Mon profil</h2>
         <form action="{{ path("app_profile_updateprofile") }}" method="post">
             {{ form_start(updateForm) }}
             <div class="grid">

@@ -18,12 +18,19 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('username', null, ["label" => "Pseudo"])
-            ->add('email', null, ["label" => "Adresse e-mail"])
+            ->add('username', null, [
+                "label" => "Pseudo",
+                "label_attr" => ['class' => 'col-xs-4']
+            ])
+            ->add('email', null, [
+                "label" => "Adresse e-mail",
+                "label_attr" => ['class' => 'col-xs-4']
+            ])
             ->add('plainPassword', PasswordType::class, [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 "label" => "Mot de passe",
+                "label_attr" => ['class' => 'col-xs-4'],
                 'mapped' => false,
                 'attr' => ['autocomplete' => 'new-password'],
                 'constraints' => [
@@ -40,6 +47,7 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('city', EntityType::class, [
                 "label" => "Ville de rattachement",
+                "label_attr" => ['class' => 'col-xs-4'],
                 "required" => false,
                 "class" => Site::class,
                 "choice_label" => "name"
