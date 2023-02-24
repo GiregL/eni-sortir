@@ -3,6 +3,7 @@
 {% block title %}Hello MainController!{% endblock %}
 
 {% block body %}
+
 <main class="container" id="maincontent">
     {% include "partials/_flash.html.twig" %}
     {{ include('main/_form.html.twig') }}
@@ -34,7 +35,9 @@
                     {% else %}
                         <a href='{{ path('app_event_inscription',{id:event.id}) }}'>S'incrire </a> 
                     {% endif %}
+                    {% if not isPublish(event) %}
                         <a href='{{ path('app_event_publish',{id:event.id}) }}'>Publier </a>
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}

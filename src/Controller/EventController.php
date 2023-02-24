@@ -292,8 +292,14 @@ class EventController extends AbstractController
             $this->addFlash("error", "Vous ne pouvez publiez un évènement dont vous n'êtes pas l'organisateur.");
             return $this->redirectToRoute("app_main");
         }
+        if($availableEvent->getState() == 'OPEN') {
+            $this->logger->warning("L'évènement est déjà publiée.");
+            $this->addFlash("error", "Vous avez déjà publié l'évènement.");
+            return $this->redirectToRoute("app_main");
+        }
 
         $this->eventServices->publishEvent($availableEvent);
         return $this->redirectToRoute('app_main');
     }
+
 }
