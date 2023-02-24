@@ -3,6 +3,7 @@
 {% block title %}Hello MainController!{% endblock %}
 
 {% block body %}
+
 {% include "partials/_flash.html.twig" %}
 <main class="container">
     {{ include('main/_form.html.twig') }}
@@ -28,9 +29,13 @@
                 <td>{{ event.state.identifier }}</td>
                 <td>{{ event.members|length }} / {{ event.maxRegister }}</td>
                 <td><a href="{{ path('app_profile_detail_id',{id:event.organizer.id}) }}">{{ event.organizer.name }}</a>
-                <td><a href="{{ path('app_event_detail',{id:event.id}) }}">Afficher - </a>
-                    <a href="{{ path('app_event_inscription',{id:event.id}) }}">S'incrire - </a>
-                    <a href="{{ path('app_event_unsub', {id:event.id}) }}">Se désister</a>
+                <td><a href="{{ path('app_event_detail',{id:event.id}) }}">Afficher </a> -
+                    {% if isUserRegisteredOnEvent(event, app.user.profil) %}
+                        <a href="{{ path('app_event_unsub', {id:event.id}) }}">Se désister</a>  
+                    {% else %}
+                        <a href='{{ path('app_event_inscription',{id:event.id}) }}'>S'incrire </a> 
+                    {% endif %}
+                        <a href='{{ path('app_event_publish',{id:event.id}) }}'>Publier </a>
                 </td>
             </tr>
             {% endfor %}

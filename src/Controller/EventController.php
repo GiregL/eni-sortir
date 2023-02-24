@@ -236,8 +236,7 @@ class EventController extends AbstractController
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
         $publishedEvent = $form['publish']->getData();
-        // dd($publishedEvent);
-        if($publishedEvent == false) {
+        if($publishedEvent == 'false') {
             $event->setState(EventState::getCreating());
         }
         if($publishedEvent){
@@ -257,5 +256,44 @@ class EventController extends AbstractController
             'event' => $event,
             'form' => $form
         ]);
+    }
+
+    /**
+     * @Route("/events/{id}/publish", name="app_event_publish", requirements={"id": "\d+"}, methods={"GET", "POST"})
+     */
+    public function publishEvent(Request $request, Event $availableEvent): Response
+    {
+        $user = $this->getUser();
+
+        if (!$user) {
+            $this->logger->info("Tentative de création d'un event par un utilisateur non authentifié.");
+            $this->addFlash("error", "Vous devez être authentifié pour faire cette action.");
+            return $this->redirectToRoute("app_login");
+        }
+
+        if (!($user instanceof User)) {
+            $this->logger->warning("L'utilisateur n'est pas une instance de l'entité User.");
+            $this->addFlash("error", "Une erreur interne est survenue, ce service n'est pas disponible.");
+            return $this->redirectToRoute("app_main");
+        }
+
+        $member = $user->getProfil();
+
+        if (!$member) {
+            $this->logger->warning("L'utilisateur {$user->getId()} n'a pas de profil associé.");
+            $this->addFlash("error", "Une erreur interne est survenue, veuillez contacter l'administrateur de la plateforme.");
+            return $this->redirectToRoute("app_main");
+        }
+
+        $organizer = $this->eventServices->isUserOrganizerOfEvent($user,$availableEvent);
+
+        if(!$organizer) {
+            $this->logger->warning("L'utilisateur n'est pas l'organisateur de l'évènement.");
+            $this->addFlash("error", "Vous ne pouvez publiez un évènement dont vous n'êtes pas l'organisateur.");
+            return $this->redirectToRoute("app_main");
+        }
+
+        $this->eventServices->publishEvent($availableEvent);
+        return $this->redirectToRoute('app_main');
     }
 }
