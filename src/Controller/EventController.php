@@ -59,7 +59,7 @@ class EventController extends AbstractController
     }
 
     /**
-     * @Route("/events/{id}/cancel", name="app_event_cancel_show", requirements={"id" = "\d+", methods={"GET"}}
+     * @Route("/events/{id}/cancel", name="app_event_cancel_show", requirements={"id" = "\d+"}, methods={"GET"})
      */
     public function showCancelEvent(Event $event, Request $request): Response
     {
@@ -108,7 +108,8 @@ class EventController extends AbstractController
         $cancelForm = $this->createForm(CancelEventFormType::class, $cancelFormData);
 
         return $this->render("event/cancel.html.twig", [
-            "cancelForm" => $cancelForm->createView()
+            "cancelForm" => $cancelForm->createView(),
+            "eventId" => $event->getId()
         ]);
     }
 

@@ -45,6 +45,9 @@ class MainController extends AbstractController
         $twig->addFunction(new TwigFunction("isUserRegisteredOnEvent", function($event, $member) {
             return $this->eventServices->isUserRegisteredOnEvent($event, $member);
         }));
+        $twig->addFunction(new TwigFunction("isUserOrganizerOfEvent", function ($user, $event) {
+            return $this->eventServices->isUserOrganizerOfEvent($user, $event);
+        }));
 
         return new Response($twig->render('main/index.html.twig', [
             "eventFilterForm" => $form->createView(),

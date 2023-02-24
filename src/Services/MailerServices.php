@@ -33,6 +33,15 @@ class MailerServices
     public function sendCancellationMail(Event $event, string $reason): void
     {
         $this->logger->info("Appel du service d'envois de mails pour l'annulation d'un évenement. Avec l'ID : {$event->getId()}");
+
+        $organizerEmail = new Email();
+        $organizerEmail
+            ->from($this->platformEmailFrom)
+            ->to($event->getOrganizer()->getMail())
+            ->subject("Confirmation de l'annulation d'événement")
+            ->text("Votre événement \"{$event->getName()}\" a bien été annulé.");
+        $this->mailer->send($organizerEmail);
+
         foreach ($event->getMembers() as $member) {
             $email = (new Email())
                 ->from($this->platformEmailFrom)
