@@ -3,11 +3,11 @@
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
-{% include "partials/_flash.html.twig" %}
 <main class="container" id="maincontent">
     <div class="row">
-
+        {% include "partials/_flash.html.twig" %}
         <h2 class="col-xs-12 col-md-8 col-md-offset-2">Se connecter</h2>
+
         <form method="post" class="col-xs-12 col-md-8 col-md-offset-2">
             {% if error %}
                 <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -32,10 +32,11 @@
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
             <div class="row">
-                <button class="col-xs-12" type="submit">Sign in</button>
-            </div>
-            <div class="row">
                 <label for="_remember_me"><input type="checkbox" name="_remember_me" id="_remember_me"> Se souvenir de moi</label>
+            </div>
+            
+            <div class="row">
+                <button class="col-xs-12" type="submit">Sign in</button>
             </div>
         </form>
     </div>

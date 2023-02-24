@@ -3,8 +3,8 @@
 {% block title %}Hello MainController!{% endblock %}
 
 {% block body %}
-{% include "partials/_flash.html.twig" %}
 <main class="container" id="maincontent">
+    {% include "partials/_flash.html.twig" %}
     {{ include('main/_form.html.twig') }}
 
     <table>
