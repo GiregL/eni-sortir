@@ -2,18 +2,15 @@
 
 namespace App\Form;
 
-use App\Entity\City;
 use App\Entity\Event;
 use App\Entity\Place;
-use App\Entity\Site;
-use App\Entity\State;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -57,6 +54,7 @@ class EventType extends AbstractType
                 'mapped' => false
             ])
             ->add('publishEvent', HiddenType::class, ['mapped' => false])
+            ->add('save', SubmitType::class, ["label" => "Enregistrer"]);
         ;
     }
 

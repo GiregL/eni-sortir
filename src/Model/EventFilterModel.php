@@ -1,5 +1,5 @@
 <?php
-namespace App\Data;
+namespace App\Model;
 
 use App\Entity\Site;
 use DateTime;
@@ -58,7 +58,7 @@ class EventFilterModel
         $this->end_date = $end_date;
     }
 
-    public function getIsOrganizer(): bool
+    public function getIsOrganizer(): ?bool
     {
         return $this->is_organizer;
     }
@@ -68,7 +68,7 @@ class EventFilterModel
         $this->is_organizer = $is_organizer;
     }
 
-    public function getIsMember(): bool
+    public function getIsMember(): ?bool
     {
         return $this->is_member;
     }
@@ -78,7 +78,7 @@ class EventFilterModel
         $this->is_member = $is_member;
     }
 
-    public function getIsNotMember(): bool
+    public function getIsNotMember(): ?bool
     {
         return $this->is_not_member;
     }
@@ -88,7 +88,7 @@ class EventFilterModel
         $this->is_not_member = $is_not_member;
     }
 
-    public function getIsPassedEvent(): bool
+    public function getIsPassedEvent(): ?bool
     {
         return $this->is_passed_event;
     }

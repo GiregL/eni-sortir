@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Data\EventFilterModel;
+use App\Model\EventFilterModel;
 use App\Entity\Site;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;

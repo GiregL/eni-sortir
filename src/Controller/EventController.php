@@ -359,4 +359,27 @@ class EventController extends AbstractController
         return $this->redirectToRoute('app_main');
     }
 
+    /**
+     * @Route("/events/{id}/update", name="app_event_update", requirements={"id": "\d+"}, methods={"GET", "POST"})
+     */
+    public function updateEvent(Request $request,Event $availableEvent, EntityManagerInterface $entityManager) {
+
+        $user = $this->getUser();
+
+        $form = $this->createForm(EventType::class, $availableEvent);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($availableEvent);
+            $entityManager->flush();
+            return $this->redirectToRoute('app_main', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('event/update.html.twig', [
+            "form" => $form->createView(),
+            "availableEvent" => $availableEvent,
+            "user" => $user
+        ]);
+    }
+
 }

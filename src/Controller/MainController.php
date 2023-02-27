@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Data\EventFilterModel;
+use App\Model\EventFilterModel;
 use App\Entity\User;
 use App\Form\EventFilterFormType;
 use App\Repository\EventRepository;
