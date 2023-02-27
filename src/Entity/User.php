@@ -154,6 +154,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * @return bool True if the user is an admin
+     */
     public function isAdmin(): bool
     {
         return in_array("ROLE_ADMIN", $this->getRoles());
