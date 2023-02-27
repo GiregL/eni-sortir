@@ -53,7 +53,6 @@ class MainController extends AbstractController
             return $this->eventServices->isPublished($event);
         }));
 
-
         return new Response($twig->render('main/index.html.twig', [
             "eventFilterForm" => $form->createView(),
             "event_list" => $event_list,
