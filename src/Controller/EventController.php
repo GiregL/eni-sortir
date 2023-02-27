@@ -292,11 +292,13 @@ class EventController extends AbstractController
         $event = new Event();
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
-        $publishedEvent = $form['publish']->getData();
-        if($publishedEvent == 'false') {
+        $publishedEvent = $form->get('saveAndPublish')->isClicked()
+            ? 'event_creating'
+            : 'event_opening';
+        if($publishedEvent == 'event_creating') {
             $event->setState(EventState::getCreating());
         }
-        if($publishedEvent){
+        if($publishedEvent == 'event_opening'){
             $event->setState(EventState::getOpen());    
         }
         $event->setSite($member->getSite());
