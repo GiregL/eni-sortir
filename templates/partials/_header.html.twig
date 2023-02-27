@@ -14,16 +14,38 @@
         {"link":url("app_logout"), "label":"Se déconnecter"},
     ]
 %}
+    {% set adminLinks = [
+        {"link":url("app_user_index"), "label":"Ajouter un utilisateur"},
+        {"link":url("app_profile"), "label":"Mon profil"},
+        {"link":url("app_logout"), "label":"Se déconnecter"}
+    ]
+%}
+
 {% set menu = app.user? menu|merge(connectedLinks):menu|merge(disconnectedlinks) %}
 
+{% set menuAdmin = menu|merge(adminLinks) %}
 
 <header class="container">
     <nav aria-labelledby="sections-heading">
         <h1><a href="{{url("app_main")}}">Sortir.com</a></h1>
+        {% if app.user %}
+            {% if 'ROLE_USER' in app.user.roles %}
+                <ul>
+                    {% for item in menu %}
+                        <li><a href="{{item.link}}">{{item.label}}</a></li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            {% if app.user.isAdmin %}
+                {% for item in menuAdmin %}
+                    <li><a href="{{item.link}}">{{item.label}}</a></li>
+                {% endfor %}
+            {% endif %}
+        {% endif %}
         <ul>
-        {% for item in menu %}
-            <li><a href="{{item.link}}">{{item.label}}</a></li>
-        {% endfor %}
+            {% for item in menu %}
+                <li><a href="{{item.link}}">{{item.label}}</a></li>
+            {% endfor %}
         </ul>
     </nav>
 </header>

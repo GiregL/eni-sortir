@@ -3,7 +3,9 @@
 namespace App\Model;
 
 use App\Entity\City;
+use App\Entity\Member;
 use App\Entity\Site;
+use App\Entity\User;
 
 /**
  * Profile update DTO
@@ -18,6 +20,7 @@ class ProfileUpdateModel
     private $password;
     private $confirmPassword;
     private $city;
+    private $profil;
 
     public function getPseudo(): ?string
     {
@@ -97,5 +100,17 @@ class ProfileUpdateModel
     public function setCity(Site $city): void
     {
         $this->city = $city;
+    }
+    
+    public function getProfil(): ?Member
+    {
+        return $this->profil;
+    }
+
+    public function setProfil(Member $profil): self
+    {
+        $this->profil = $profil;
+
+        return $this;
     }
 }
