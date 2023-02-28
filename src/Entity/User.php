@@ -46,6 +46,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $profil;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $nameImage;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -160,5 +165,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function isAdmin(): bool
     {
         return in_array("ROLE_ADMIN", $this->getRoles());
+    }
+
+    public function getNameImage(): ?string
+    {
+        return $this->nameImage;
+    }
+
+    public function setNameImage(?string $nameImage): self
+    {
+        $this->nameImage = $nameImage;
+
+        return $this;
     }
 }

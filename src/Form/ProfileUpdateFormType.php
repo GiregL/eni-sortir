@@ -7,11 +7,13 @@ use App\Model\ProfileUpdateModel;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Image;
 
 /**
  * User profile update form.
@@ -33,6 +35,12 @@ class ProfileUpdateFormType extends AbstractType
                 "required" => false,
                 "class" => Site::class,
                 "choice_label" => "name"
+            ])
+            ->add('nameImage', FileType::class, [
+                'label' => false,
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [new Image(['maxSize' => '7024k','mimeTypesMessage' => 'dfghjkl'])]
             ])
             ->add('send', SubmitType::class, ["label" => "Enregistrer"]);
     }

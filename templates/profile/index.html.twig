@@ -4,14 +4,12 @@
 
 {% block body %}
 
-
 <main class="container" id="maincontent">
         {% include 'partials/_flash.html.twig' %}
         <h2>Mon profil</h2>
-        <form action="{{ path("app_profile_updateprofile") }}" method="post">
-            {{ form_start(updateForm) }}
+        {{ form_start(updateForm) }}
             <div class="grid">
-                <img src="https://fastly.picsum.photos/id/619/200/300.jpg" alt="img">
+            <img src="{{ asset('uploads/images/'~ app.user.nameImage) }}" alt="img">
                 <div>
                     <div class="grid">
                         {{ form_label(updateForm.pseudo) }}
@@ -45,14 +43,17 @@
                         {{ form_label(updateForm.city) }}
                         {{ form_widget(updateForm.city) }}
                     </div>
+                    <div class="grid">
+                        {{ form_label(updateForm.nameImage) }}
+                        {{ form_widget(updateForm.nameImage) }}
+                    </div>
                 </div>
             </div>
             <div class="grid">
                 {{ form_widget(updateForm.send) }}
                 <a href="{{ path('app_profile') }}" role="button">Annuler</a>
             </div>
-            {{ form_end(updateForm) }}
-        </form>
+        {{ form_end(updateForm) }}
     </main>
 
 {% endblock %}

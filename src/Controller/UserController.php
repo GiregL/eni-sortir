@@ -35,13 +35,11 @@ class UserController extends AbstractController {
      */
     public function index(): Response
     {
-        $formModel = new ProfileUpdateModel();
-        $form = $this->createForm(AddUserFormType::class, $formModel);
+        $listeUsers = $this->memberRepository->findAll();
 
-        return $this->render('user/add.html.twig', [
-            "updateForm" => $form->createView()
+        return $this->render('user/index.html.twig', [
+            "listeUsers" => $listeUsers
         ]);
-
     }
 
     /**
@@ -100,10 +98,15 @@ class UserController extends AbstractController {
 
             // Show profile page
             $this->addFlash("success", "L'utilisateur et son profil ont bien été crée.");
-            return $this->index();
+
+            return $this->render('user/add.html.twig', [
+                "updateForm" => $form->createView()
+            ]);
         } else {
             $this->addFlash("error", "Les données fournies sont invalides.");
-            return $this->index();
+            return $this->render('user/add.html.twig', [
+            "updateForm" => $form->createView()
+        ]);
         }
 
         return $this->redirectToRoute("app_main");

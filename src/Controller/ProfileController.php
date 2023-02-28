@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
+
 class ProfileController extends AbstractController
 {
     private $logger;
@@ -49,6 +50,7 @@ class ProfileController extends AbstractController
         $formModel->setPassword("");
         $formModel->setConfirmPassword("");
         $formModel->setCity($user->getProfil()->getSite());
+        $formModel->setNameImage($user->getNameImage());
 
         $form = $this->createForm(ProfileUpdateFormType::class, $formModel);
 
@@ -77,6 +79,18 @@ class ProfileController extends AbstractController
             if (!$user) {
                 $this->redirectToRoute("app_main");
             }
+            
+
+            $image = $form->get('nameImage')->getData();
+            
+            /**
+             * @var UploadedFile $image
+             */
+            if($image) {
+                $newFileName = $user->getNameImage() . '-' . uniqid().'.' . $image->guessExtension();
+                $image->move($this->getParameter('images_directory'),$newFileName);
+                $user->setNameImage($newFileName);
+            }
 
             // Updating values
             if ($profileUpdate->getEmail()) {
@@ -88,6 +102,7 @@ class ProfileController extends AbstractController
             if ($profileUpdate->getLastName()) { $user->getProfil()->setName($profileUpdate->getLastName()); }
             if ($profileUpdate->getPhone()) { $user->getProfil()->setPhone($profileUpdate->getPhone()); }
             if ($profileUpdate->getCity()) { $user->getProfil()->setSite($profileUpdate->getCity()); }
+            if ($profileUpdate->getNameImage()) { $user->setNameImage($newFileName); } 
 
             // Check if a new password should be set (both fields should not be empty or blank)
             if ($profileUpdate->getPassword() !== null && trim($profileUpdate->getPassword()) !== ""
