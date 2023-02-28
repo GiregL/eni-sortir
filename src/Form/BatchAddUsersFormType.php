@@ -19,13 +19,14 @@ class BatchAddUsersFormType extends AbstractType
                 "required" => true,
                 "constraints" => [
                     new File([
-                        "maxSize" => "1024k",
-                        "maxSizeMessage" => "Le fichier fourni dépasse la taille limite de 1024ko.",
-                        "mimeTypes" => [
-                            "application/csv",
-                            "application/x-csv"
-                        ],
-                        "mimeTypesMessage" => "Vous devez fournir un fichier au format CSV."
+                        // TODO: Contraintes de type pétées
+//                        "maxSize" => "1m",
+//                        "maxSizeMessage" => "Le fichier fourni dépasse la taille limite de 1024ko.",
+//                        "mimeTypes" => [
+//                            "text/csv",
+//                            "application/vnd.ms-excel"
+//                        ],
+//                        "mimeTypesMessage" => "Vous devez fournir un fichier au format CSV."
                     ])
                 ]
             ]);

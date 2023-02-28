@@ -4,14 +4,19 @@ namespace App\Controller;
 
 use App\Entity\Member;
 use App\Entity\User;
+use App\Exceptions\UserServicesException;
 use App\Form\AddUserFormType;
+use App\Form\BatchAddUsersFormType;
 use App\Form\ProfileUpdateFormType;
+use App\Model\BatchAddUsersModel;
 use App\Model\ProfileUpdateModel;
 use App\Model\RegistrationModel;
 use App\Repository\MemberRepository;
+use App\Services\UserServices;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -22,11 +27,13 @@ class UserController extends AbstractController {
 
     private $logger;
     private $memberRepository;
+    private $userServices;
 
-    public function __construct(LoggerInterface $logger, MemberRepository $memberRepository)
+    public function __construct(LoggerInterface $logger, MemberRepository $memberRepository, UserServices $userServices)
     {
         $this->logger = $logger;
         $this->memberRepository = $memberRepository;
+        $this->userServices = $userServices;
     }
 
     /**
@@ -78,7 +85,6 @@ class UserController extends AbstractController {
             $member->setPhone($profile->getPhone());
             $member->setAdmin(false);
             $member->setAsset(false);
-            $profile->getConfirmPassword();
             $member->setSite($profile->getCity());
             $user->setProfil($member);
 
@@ -100,13 +106,105 @@ class UserController extends AbstractController {
 
             // Show profile page
             $this->addFlash("success", "L'utilisateur et son profil ont bien été crée.");
-            return $this->index();
+            return $this->redirectToRoute("app_user_index");
         } else {
             $this->addFlash("error", "Les données fournies sont invalides.");
-            return $this->index();
+            return $this->redirectToRoute("app_user_index");
         }
-
-        return $this->redirectToRoute("app_main");
     }
 
+    /**
+     * @Route("/admin/users/add-all", name="app_user_addall_get", methods={"GET"})
+     * @IsGranted("ROLE_ADMIN")
+     */
+    public function getBatchAddUsersFromCSV(): Response
+    {
+        $this->logger->info("Appel du service de la page d'import de multiples utilisateurs depuis un fichier CSV.");
+
+        $importFormModel = new BatchAddUsersModel();
+        $importForm = $this->createForm(BatchAddUsersFormType::class, $importFormModel);
+
+        return $this->render("user/addall.html.twig", [ "importForm" => $importForm->createView()]);
+    }
+
+    /**
+     * @Route("/admin/users/add-all", name="app_user_addall_post", methods={"POST"})
+     * @IsGranted("ROLE_ADMIN")
+     */
+    public function postBatchAddUsersFromCSV(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $this->logger->info("Appel du service d'import de multiples utilisateurs depuis un fichier CSV.");
+
+        $importFormModel = new BatchAddUsersModel();
+        $importForm = $this->createForm(BatchAddUsersFormType::class, $importFormModel);
+        $importForm->handleRequest($request);
+
+        if ($importForm->isSubmitted() && $importForm->isValid()) {
+            $formFile = $importForm->get("usersFile")->getData();
+
+            if ($formFile instanceof UploadedFile) {
+                if (($handler = fopen($formFile->getRealPath(), "r")) !== false) {
+
+                    $counter = 0;
+                    $start = true;
+                    while (($userLine = fgetcsv($handler)) !== false) {
+                        // Skip first line (headers)
+                        if ($start) {
+                            $start = false;
+                            continue;
+                        }
+
+                        try {
+                            dump($userLine);
+                            $user = $this->userServices->createUserFromCSVLine($counter, $userLine);
+
+                            if (!$user) {
+                                throw new \Exception("Echec de l'insersion d'un utilisateur.");
+                            }
+
+                            $entityManager->persist($user);
+                        } catch (\Exception $e) {
+                            $this->logger->warning(
+                                sprintf("La création de l'utilisateur de la ligne %d du fichier CSV a échoué\t\n%s\t\n%s",
+                                    $counter,
+                                    $e->getMessage(),
+                                    print_r($userLine)));
+                            $counter--;
+                        }
+                        $counter++;
+                    }
+
+                    try {
+                        $entityManager->flush();
+                    } catch (\Exception $e) {
+                        $this->logger->warning("Erreur lors de l'insertion des utilisateurs: " . $e->getMessage());
+                    }
+
+                    fclose($handler);
+                    $this->logger->info("Import de {$counter} nouveaux utilisateurs réalisé.");
+                    $this->addFlash("success", "Import de {$counter} nouveaux utilisateurs réalisé.");
+                    // TODO: Rediriger vers une page ayant la liste des utilisateurs de la plateforme.
+                    return $this->redirectToRoute("app_main");
+                } else {
+                    $this->logger->warning("Une erreur interne est survenue, impossible de lire le fichier temporaire d'import d'utilisateurs.");
+                    $this->addFlash("error", "Une erreur interne est survenue, l'import des utilisateurs n'a pas pu être fait.");
+                    return $this->redirectToRoute("app_main");
+                }
+            } else {
+                $this->logger->warning("Une erreur interne est survenue, le fichier uploadé n'est pas un UploadedFile.");
+                $this->addFlash("error", "Une erreur interne est survenue, ce service n'est pas disponible.");
+                return $this->redirectToRoute("app_main");
+            }
+
+        } else {
+            $this->logger->info("Formulaire d'import d'utilisateurs invalide.");
+
+            foreach ($importForm->getErrors() as $error) {
+                $this->logger->debug("Form error: " . $error);
+            }
+
+            $this->addFlash("error", "Le formulaire envoyé est invalide.");
+            return $this->redirectToRoute("app_user_addall_get");
+        }
+    }
 }

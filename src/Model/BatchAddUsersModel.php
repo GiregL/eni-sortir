@@ -6,21 +6,21 @@ use Symfony\Component\HttpFoundation\File\File;
 
 class BatchAddUsersModel
 {
-    private $file;
+    private $usersFile;
 
     /**
-     * @return File
+     * @return mixed
      */
-    public function getFile()
+    public function getUsersFile()
     {
-        return $this->file;
+        return $this->usersFile;
     }
 
     /**
-     * @param File $file
+     * @param mixed $usersFile
      */
-    public function setFile($file): void
+    public function setUsersFile($usersFile): void
     {
-        $this->file = $file;
+        $this->usersFile = $usersFile;
     }
 }

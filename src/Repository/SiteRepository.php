@@ -39,6 +39,18 @@ class SiteRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * @return Site|null City if exactly one city is found, else Null
+     */
+    public function findOneBySiteName(string $siteName): ?Site
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.name LIKE :siteName')
+            ->setParameter("siteName", $siteName)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
 //    /**
 //     * @return Site[] Returns an array of Site objects
 //     */
