@@ -21,6 +21,7 @@ class ProfileUpdateModel
     private $confirmPassword;
     private $city;
     private $profil;
+    private $nameImage;
 
     public function getPseudo(): ?string
     {
@@ -112,5 +113,15 @@ class ProfileUpdateModel
         $this->profil = $profil;
 
         return $this;
+    }
+    
+    public function getNameImage(): ?string
+    {
+        return $this->nameImage;
+    }
+
+    public function setNameImage($nameImage): void
+    {
+        $this->nameImage = $nameImage;
     }
 }

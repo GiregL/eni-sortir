@@ -42,13 +42,11 @@ class UserController extends AbstractController {
      */
     public function index(): Response
     {
-        $formModel = new ProfileUpdateModel();
-        $form = $this->createForm(AddUserFormType::class, $formModel);
+        $listeUsers = $this->memberRepository->findAll();
 
-        return $this->render('user/add.html.twig', [
-            "updateForm" => $form->createView()
+        return $this->render('user/index.html.twig', [
+            "listeUsers" => $listeUsers
         ]);
-
     }
 
     /**

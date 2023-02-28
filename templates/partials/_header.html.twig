@@ -15,7 +15,7 @@
     ]
 %}
     {% set adminLinks = [
-        {"route":"app_user_index", "label":"Ajouter un utilisateur"}
+        {"route":"app_user_index", "label":"Liste des utilisateurs"}
     ]
 %}
 
@@ -26,24 +26,22 @@
 <header class="container">
     <nav aria-labelledby="sections-heading">
         <h1><a href="{{url("app_main")}}">Sortir.com</a></h1>
+        <ul>
             {% if is_granted("ROLE_ADMIN") %}
                 {% for item in menuAdmin %}
                     <li><a href="{{url(item.route)}}" {% if app.request.attributes.get( '_route' ) starts with item.route %} aria-current="page"{% endif %}>{{item.label}}</a></li>
                 {% endfor %}
             {% elseif is_granted("ROLE_USER") %}
-                <ul>
                 {% for item in menu %}
                     <li>
                         <a href="{{url(item.route)}}" {% if app.request.attributes.get( '_route' ) starts with item.route %}aria-current="page"{% endif %}>{{item.label}}</a>
                     </li>
                 {% endfor %}
-                </ul>
             {% else %}
                 {% for item in menu %}
                     <li><a href="{{url(item.route)}}" {% if app.request.attributes.get( '_route' ) starts with item.route %} aria-current="page"{% endif %}>{{item.label}}</a></li>
                 {% endfor %}
             {% endif %}
-
         </ul>
     </nav>
 </header>
