@@ -41,7 +41,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $username;
 
     /**
-     * @ORM\OneToOne(targetEntity=Member::class, cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=Member::class, cascade={"persist", "remove"}, mappedBy="user", orphanRemoval=true)
      * @ORM\JoinColumn(nullable=true)
      */
     private $profil;
@@ -152,7 +152,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->profil;
     }
 
-    public function setProfil(Member $profil): self
+    public function setProfil(?Member $profil): self
     {
         $this->profil = $profil;
 

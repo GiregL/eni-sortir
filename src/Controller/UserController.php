@@ -12,6 +12,7 @@ use App\Model\BatchAddUsersModel;
 use App\Model\ProfileUpdateModel;
 use App\Model\RegistrationModel;
 use App\Repository\MemberRepository;
+use App\Repository\UserRepository;
 use App\Services\UserServices;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -28,12 +29,14 @@ class UserController extends AbstractController {
     private $logger;
     private $memberRepository;
     private $userServices;
+    private $userRepository;
 
-    public function __construct(LoggerInterface $logger, MemberRepository $memberRepository, UserServices $userServices)
+    public function __construct(LoggerInterface $logger, MemberRepository $memberRepository, UserServices $userServices, UserRepository $userRepository)
     {
         $this->logger = $logger;
         $this->memberRepository = $memberRepository;
         $this->userServices = $userServices;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -43,6 +46,7 @@ class UserController extends AbstractController {
     public function index(): Response
     {
         $listeUsers = $this->memberRepository->findAll();
+        // dd($listeUsers);
 
         return $this->render('user/index.html.twig', [
             "listeUsers" => $listeUsers
@@ -109,6 +113,19 @@ class UserController extends AbstractController {
             $this->addFlash("error", "Les données fournies sont invalides.");
             return $this->redirectToRoute("app_user_index");
         }
+    }
+
+    /**
+     * @Route("/admin/users/{id}/remove", name="app_user_remove", requirements={"id"="\d+"})
+     * @IsGranted("ROLE_ADMIN")
+     */
+    public function removeUser(User $user) {
+        
+        $profil = $user->getProfil();
+        $user->setProfil(null);
+
+        $this->userRepository->remove($user,true);
+        $this->memberRepository->remove($profil, true);
     }
 
     /**

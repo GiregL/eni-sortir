@@ -50,7 +50,7 @@ class Member
     private $asset;
 
     /**
-     * @ORM\OneToOne(targetEntity=User::class, cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=User::class, cascade={"persist", "remove"}, inversedBy="profil",orphanRemoval=true)
      * @ORM\JoinColumn(nullable=true)
      */
     private $user;
