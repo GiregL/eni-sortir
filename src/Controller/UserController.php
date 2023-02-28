@@ -14,6 +14,8 @@ use App\Model\RegistrationModel;
 use App\Repository\MemberRepository;
 use App\Repository\UserRepository;
 use App\Services\UserServices;
+use DateTime;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -45,8 +47,7 @@ class UserController extends AbstractController {
      */
     public function index(): Response
     {
-        $listeUsers = $this->memberRepository->findAll();
-        // dd($listeUsers);
+        $listeUsers = $this->memberRepository->findAllMembers();
 
         return $this->render('user/index.html.twig', [
             "listeUsers" => $listeUsers
@@ -119,13 +120,11 @@ class UserController extends AbstractController {
      * @Route("/admin/users/{id}/remove", name="app_user_remove", requirements={"id"="\d+"})
      * @IsGranted("ROLE_ADMIN")
      */
-    public function removeUser(User $user) {
+    public function removeUser(User $user, EntityManagerInterface $em) {
         
-        $profil = $user->getProfil();
-        $user->setProfil(null);
-
-        $this->userRepository->remove($user,true);
-        $this->memberRepository->remove($profil, true);
+        $user->setDateRemoved(new DateTime());
+        $em->flush();
+        return $this->redirectToRoute('app_user_index');
     }
 
     /**

@@ -29,6 +29,16 @@ class MemberRepository extends ServiceEntityRepository
         $this->logger = $logger;
     }
 
+    public function findAllMembers(): array
+    {
+        return $this->createQueryBuilder('m')
+            ->leftJoin('m.user', 'u')
+            ->andWhere('u.dateRemoved IS NULL')
+            ->select('m')
+            ->getQuery()
+            ->getResult();
+    }
+
     public function add(Member $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);

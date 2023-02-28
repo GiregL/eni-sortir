@@ -51,6 +51,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $nameImage;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $dateRemoved;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -175,6 +180,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setNameImage(?string $nameImage): self
     {
         $this->nameImage = $nameImage;
+
+        return $this;
+    }
+
+    public function getDateRemoved(): ?\DateTimeInterface
+    {
+        return $this->dateRemoved;
+    }
+
+    public function setDateRemoved(?\DateTimeInterface $dateRemoved): self
+    {
+        $this->dateRemoved = $dateRemoved;
 
         return $this;
     }
