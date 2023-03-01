@@ -8,7 +8,7 @@
 <main class="container" id="maincontent">
         {% include 'partials/_flash.html.twig' %}
         <h2>Ajout d'un utilisateur</h2>
-        <form action="{{ path("app_user_add") }}" method="post">
+        {# <form action="{{ path("app_user_add") }}" method="post"> #}
             {{ form_start(updateForm) }}
             <div class="grid">
                 <div>
@@ -44,11 +44,16 @@
                         {{ form_label(updateForm.city) }}
                         {{ form_widget(updateForm.city) }}
                     </div>
+                    <div class="grid">
+                        {{ form_label(updateForm.nameImage) }}
+                        {{ form_widget(updateForm.nameImage) }}
+                    </div>
                 </div>
             </div>
             <div class="grid">
                 {{ form_widget(updateForm.send) }}
-                <a href="{{ path('app_user_add') }}" role="button">Annuler</a>
+                {# <a href="{{ path('app_user_add') }}" role="button">Enregistrer</a> #}
+                {# <a href="{{ path('app_user_index') }}" role="button">Annuler</a> #}
             </div>
             {{ form_end(updateForm) }}
         </form>

@@ -42,7 +42,7 @@ class UserController extends AbstractController {
     }
 
     /**
-     * @Route("/admin/users/index", name="app_user_index")
+     * @Route("/admin/users", name="app_user_index")
      * @IsGranted("ROLE_ADMIN")
      */
     public function index(): Response
@@ -55,6 +55,21 @@ class UserController extends AbstractController {
     }
 
     /**
+     * @Route("/admin/users/form", name="app_user_form_add")
+     * @IsGranted("ROLE_ADMIN")
+     */
+    public function formAdd(): Response
+    {
+        $form = $this->createForm(AddUserFormType::class, new ProfileUpdateModel(), [
+            'action' => $this->generateUrl('app_user_add'),
+        ]);
+
+        return $this->render('user/add.html.twig', [
+            "updateForm" => $form->createView()
+        ]);
+    }
+
+    /**
      * @Route("/admin/users/add", name="app_user_add")
      * @IsGranted("ROLE_ADMIN")
      */
@@ -63,7 +78,6 @@ class UserController extends AbstractController {
                         UserPasswordHasherInterface $userPasswordHasher,
                         UserPasswordHasherInterface $passwordHasher): Response
     {
-
         $profile = new ProfileUpdateModel();
         $member = new Member();
         $user = new User();
@@ -112,7 +126,7 @@ class UserController extends AbstractController {
             return $this->redirectToRoute("app_user_index");
         } else {
             $this->addFlash("error", "Les données fournies sont invalides.");
-            return $this->redirectToRoute("app_user_index");
+            return $this->redirectToRoute("app_user_form_add");
         }
     }
 
@@ -124,6 +138,19 @@ class UserController extends AbstractController {
         
         $user->setDateRemoved(new DateTime());
         $em->flush();
+        $this->addFlash("success", "Le compte a bien été supprimé .");
+        return $this->redirectToRoute('app_user_index');
+    }
+
+    /**
+     * @Route("/admin/users/{id}/disable", name="app_user_disable", requirements={"id"="\d+"})
+     * @IsGranted("ROLE_ADMIN")
+     */
+    public function disableUser(User $user, EntityManagerInterface $em) {
+        
+        $user->getProfil()->setAsset(true);
+        $em->flush();
+        $this->addFlash("success", "Le compte a bien été desactivé.");
         return $this->redirectToRoute('app_user_index');
     }
 

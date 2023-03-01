@@ -62,6 +62,29 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return $this->createQueryBuilder('u')
             ->where('u.email = :emailUsername')
             ->orWhere('u.username = :emailUsername')
+            ->andWhere('u.dateRemoved is NULL')
+            ->setParameter('emailUsername', $emailUsername)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    public function findByEmailUsernameRemove(string $emailUsername)
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.email = :emailUsername')
+            ->orWhere('u.username = :emailUsername')
+            ->setParameter('emailUsername', $emailUsername)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    public function findByEmailUsernameDisable(string $emailUsername)
+    {
+        return $this->createQueryBuilder('u')
+            ->leftJoin('u.user', 'm')
+            ->where('u.email = :emailUsername')
+            ->orWhere('u.username = :emailUsername')
+            ->andWhere('m.asset = true')
             ->setParameter('emailUsername', $emailUsername)
             ->getQuery()
             ->getOneOrNullResult();
