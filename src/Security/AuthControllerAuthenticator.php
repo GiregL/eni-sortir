@@ -16,6 +16,7 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\RememberMeBadge;
 use App\Repository\UserRepository;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
 
 class AuthControllerAuthenticator extends AbstractLoginFormAuthenticator
 {
@@ -58,6 +59,14 @@ class AuthControllerAuthenticator extends AbstractLoginFormAuthenticator
         }
 
         // For example:
+        $userValid = $this->userRepository->findAllUsers();
+
+        foreach($userValid as $user) {
+            $emailUsername = $request->request->get('emailUsername', '');
+            if($user->getUsername() == $request->getSession()->get(Security::LAST_USERNAME, $emailUsername) && $user->getDateRemoved()){
+                throw new \Exception('votre compte a été supprimé, veuillez contactez un administrateur');
+            }
+        }
         return new RedirectResponse($this->urlGenerator->generate('app_main'));
         //throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
     }

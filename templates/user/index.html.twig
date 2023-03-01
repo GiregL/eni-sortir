@@ -29,7 +29,7 @@
                     </td>
                     <td>{{ user.user.username }}</td>
                     <td>
-                    <a href="{{ path('app_user_add',{id:user.id}) }}" role="button">Désactiver</a>
+                    <a href="{{ path('app_user_disable',{id:user.id}) }}" role="button">Désactiver</a>
                     <a href="{{ path('app_user_remove',{id:user.id}) }}" role="button">Supprimer</a>
                     </td>
                 </tr>
@@ -38,7 +38,7 @@
         </table>
         
         <div>
-            <a href="{{ path('app_user_add') }}" role="button">Ajouter un utilisateur</a>
+            <a href="{{ path('app_user_form_add') }}" role="button">Ajouter un utilisateur</a>
             <a href="{{ path('app_user_addall_get') }}" role="button">Ajouter des utilisateurs via un fichier</a>
         </div>
     </div>
