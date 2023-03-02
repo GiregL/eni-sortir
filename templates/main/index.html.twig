@@ -10,49 +10,6 @@
     
     {{ include('main/_event_filter_form.html.twig') }}
     
-    {# <table>
-        <thead>
-            <tr>
-                <th scope="col">Nom de la sortie</th>
-                <th scope="col">Date de la sortie</th>
-                <th scope="col">Clôture</th>
-                <th scope="col">Etat</th>
-                <th scope="col">Inscrit/Places</th>
-                <th scope="col">Organisateur</th>
-                <th scope="col">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for event in event_list %}
-            <tr>
-                <td>{{ event.name }}</td>
-                <td>{{ event.startDate | date('m/d/Y') }}</td>
-                <td>{{ event.dateLimitRegister|date('m/d/Y') }}</td>
-                <td>{{ event.state.identifier }}</td>
-                <td>{{ event.members|length }} / {{ event.maxRegister }}</td>
-                <td><a href="{{ path('app_profile_detail_id',{id:event.organizer.id}) }}">{{ event.organizer.name }}</a></td>
-                <td><a href="{{ path('app_event_detail',{id:event.id}) }}">Afficher </a> 
-                    {% if app.user %}
-                        {% if isUserRegisteredOnEvent(event, app.user.profil) and event.organizer and isUserRegisteredOnEvent(event, app.user.profil) %}
-                            <a href="{{ path('app_event_unsub', {id:event.id}) }}">Se désister </a> 
-                        {% else %}
-                            <a href='{{ path('app_event_inscription',{id:event.id}) }}'>S'incrire </a>
-                        {% endif %}
-                        {% if not isPublish(event) %}
-                            <a href='{{ path('app_event_publish',{id:event.id}) }}'>Publier </a>
-                        {% endif %}
-                        {% if app.user and isUserOrganizerOfEvent(app.user, event) or is_granted("ROLE_ADMIN") %}
-                            <a href='{{ path('app_event_cancel_show',{id:event.id}) }}'>Annuler </a>
-                        {% elseif app.user and isUserOrganizerOfEvent(app.user, event) %}
-                            <a href='{{ path('app_event_update',{id:event.id}) }}'>Modifier </a>
-                        {% endif %}
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table> #}
-    
     <section aria-label="Liste des sorties">   
         <h2 class="visuallyhidden">Liste des sorties</h2>     
         <ul role="list" class="card_list">
@@ -75,11 +32,11 @@
                 <div class="actions">
                     <div class="btn-group">
                         <a href="{{ path('app_event_detail',{id:event.id}) }}">Afficher </a> 
-                        {% if app.user %}
-                            {% if isUserRegisteredOnEvent(event, app.user.profil) and event.organizer and isUserRegisteredOnEvent(event, app.user.profil) %}
-                                <a href='{{ path('app_event_inscription',{id:event.id}) }}'>S'incrire </a>
-                            {% else %}
+                        {% if app.user and event.dateLimitRegister > now %}
+                            {% if isUserRegisteredOnEvent(event, app.user.profil) %}
                                 <a href="{{ path('app_event_unsub', {id:event.id}) }}">Se désister </a> 
+                            {% else %}
+                                <a href='{{ path('app_event_inscription',{id:event.id}) }}'> S'incrire</a>
                             {% endif %}
                         {% endif %}
                     </div>
@@ -89,7 +46,7 @@
                                 <a href='{{ path('app_event_publish',{id:event.id}) }}'>Publier </a>
                             {% endif %}
                             {% if app.user and isUserOrganizerOfEvent(app.user, event) or is_granted("ROLE_ADMIN") %}
-                                <a href='{{ path('app_event_cancel_show',{id:event.id}) }}'>Annuler </a>
+                                <a href='{{ path('app_event_cancel_show',{id:event.id}) }}'> Annuler</a>
                             {% elseif app.user and isUserOrganizerOfEvent(app.user, event) %}
                                 <a href='{{ path('app_event_update',{id:event.id}) }}'>Modifier </a>
                             {% endif %}

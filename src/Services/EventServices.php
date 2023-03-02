@@ -77,7 +77,7 @@ class EventServices
      */
     public function isUserRegisteredOnEvent(Event $event, Member $member): bool
     {
-        return $event->getOrganizer() === $member || $event->getMembers()->contains($member);
+        return $event->getMembers()->contains($member);
     }
 
     public function isEventStarted(Event $event): bool
@@ -140,7 +140,6 @@ class EventServices
 
         if ($event->getDateLimitRegister()->getTimestamp() >= $now
             && $event->getMembers()->contains($member)
-            && $event->getOrganizer() !== $member
             && !$this->isEventArchived($event)) {
             return $this->eventRepository->removeMemberFromEvent($event, $member, true);
         } else {
