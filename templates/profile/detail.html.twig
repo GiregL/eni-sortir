@@ -3,34 +3,34 @@
 {% block title %}ENI Sortir - Profil de {{ user.username }}{% endblock %}
 
 {% block body %}
-    <main class="container" id="maincontent">
+    <main class="content-container" id="maincontent">
         <h1>Mon profil</h1>
-        <div class="grid">
+        <div>
         <img src="{{ asset('uploads/images/'~ profilOrganizer.user.nameImage) }}" alt="img">
             <div>
-                <div class="grid">
+                <div>
                     <p>Prénom</p>
                     <input type="text" value="{{ profilOrganizer.firstname }}" readonly>
                 </div>
-                <div class="grid">
+                <div>
                     <p>Nom</p>
                     <input type="text" value="{{ profilOrganizer.name }}" readonly>
                 </div>
-                <div class="grid">
+                <div>
                     <p>Téléphone</p>
                     <input type="text" value="{{ profilOrganizer.phone }}" readonly>
                 </div>
-                <div class="grid">
+                <div>
                     <p>E-Mail</p>
                     <input type="email" value="{{ profilOrganizer.mail }}" readonly>
                 </div>
-                <div class="grid">
+                <div>
                     <p>Ville de rattachement</p>
                     <input type="text" value="{{ site.name }}" readonly>
                 </div>
             </div>
         </div>
-        <div class="grid">
+        <div>
             <button>Retour</button>
         </div>
     </main>

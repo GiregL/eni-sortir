@@ -4,55 +4,59 @@
 
 {% block body %}
 
-<main class="container" id="maincontent">
+
+<main class="content-container" id="maincontent">
+        <h1>Mon profil</h1>
         {% include 'partials/_flash.html.twig' %}
-        <h2>Mon profil</h2>
         {{ form_start(updateForm) }}
-            <div class="grid">
-            <img src="{{ asset('uploads/images/'~ app.user.nameImage) }}" alt="img">
+        <div>
+            {% if app.user.nameImage %}
+                <img src="{{ asset('uploads/images/'~ app.user.nameImage) }}" alt="img">
+            {% endif %}
+            <div>
                 <div>
-                    <div class="grid">
-                        {{ form_label(updateForm.pseudo) }}
-                        {{ form_widget(updateForm.pseudo) }}
-                    </div>
-                    <div class="grid">
-                        {{ form_label(updateForm.firstName) }}
-                        {{ form_widget(updateForm.firstName) }}
-                    </div>
-                    <div class="grid">
-                        {{ form_label(updateForm.lastName) }}
-                        {{ form_widget(updateForm.lastName) }}
-                    </div>
-                    <div class="grid">
-                        {{ form_label(updateForm.phone) }}
-                        {{ form_widget(updateForm.phone) }}
-                    </div>
-                    <div class="grid">
-                        {{ form_label(updateForm.email) }}
-                        {{ form_widget(updateForm.email) }}
-                    </div>
-                    <div class="grid">
-                        {{ form_label(updateForm.password) }}
-                        {{ form_widget(updateForm.password) }}
-                    </div>
-                    <div class="grid">
-                        {{ form_label(updateForm.confirmPassword) }}
-                        {{ form_widget(updateForm.confirmPassword) }}
-                    </div>
-                    <div class="grid">
-                        {{ form_label(updateForm.city) }}
-                        {{ form_widget(updateForm.city) }}
-                    </div>
-                    <div class="grid">
-                        {{ form_label(updateForm.nameImage) }}
-                        {{ form_widget(updateForm.nameImage) }}
-                    </div>
+                    {{ form_label(updateForm.pseudo) }}
+                    {{ form_widget(updateForm.pseudo) }}
+                </div>
+                <div>
+                    {{ form_label(updateForm.firstName) }}
+                    {{ form_widget(updateForm.firstName) }}
+                </div>
+                <div>
+                    {{ form_label(updateForm.lastName) }}
+                    {{ form_widget(updateForm.lastName) }}
+                </div>
+                <div>
+                    {{ form_label(updateForm.phone) }}
+                    {{ form_widget(updateForm.phone) }}
+                </div>
+                <div>
+                    {{ form_label(updateForm.email) }}
+                    {{ form_widget(updateForm.email) }}
+                </div>
+                <div>
+                    {{ form_label(updateForm.password) }}
+                    {{ form_widget(updateForm.password) }}
+                </div>
+                <div>
+                    {{ form_label(updateForm.confirmPassword) }}
+                    {{ form_widget(updateForm.confirmPassword) }}
+                </div>
+                <div>
+                    {{ form_label(updateForm.city) }}
+                    {{ form_widget(updateForm.city) }}
+                </div>
+                <div>
+                    {{ form_label(updateForm.nameImage) }}
+                    {{ form_widget(updateForm.nameImage) }}
                 </div>
             </div>
-            <div class="grid">
-                {{ form_widget(updateForm.send) }}
-                <a href="{{ path('app_profile') }}" role="button">Annuler</a>
-            </div>
+        </div>
+
+        <div>
+            {{ form_widget(updateForm.send) }}
+            <a class="btn" href="{{ path('app_profile') }}"">Annuler</a>
+        </div>
         {{ form_end(updateForm) }}
     </main>
 

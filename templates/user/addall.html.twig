@@ -1,11 +1,15 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Ajouter plusieurs utilisateurs</h1>
-    <p>Chargez un fichier au format CSV pour importer une liste d'utilisateurs.</p>
+<main class="content-container stack" id="maincontent">
+    <div>
+        <h1>Ajouter plusieurs utilisateurs</h1>
+        <p>Chargez un fichier au format CSV pour importer une liste d'utilisateurs.</p>
+    </div>
 
     {{ form_start(importForm) }}
         {{ form_row(importForm.usersFile) }}
         <button type="submit">Importer</button>
     {{ form_end(importForm) }}
+</main>
 {% endblock %}

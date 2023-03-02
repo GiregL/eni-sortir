@@ -3,12 +3,11 @@
 {% block title %}ENI Sortir - Liste des utilisateurs{% endblock %}
 
 {% block body %}
-
-{% include 'partials/_flash.html.twig' %}
-
-    <div class="container">
-        <h1> Liste des utilisateurs </h1>
-
+<main class="content-container stack" id="maincontent">
+    <h1>Liste des utilisateurs </h1>
+    {% include 'partials/_flash.html.twig' %}
+    
+    <div class="table-container">
         <table>
             <thead>
                 <tr>
@@ -20,28 +19,42 @@
                 </tr>
             </thead>
             <tbody>
-                {% for user in listeUsers %}
+            {% for user in listeUsers %}
                 <tr>
                     <td>{{ user.name }}</td>
                     <td>{{ user.mail }}</td>
                     <td> 
-                    {% for roles in user.user.roles %}
+                        {% for roles in user.user.roles %}
                         {{ roles }}
-                    {% endfor %}
+                        {% endfor %}
                     </td>
                     <td>{{ user.user.username }}</td>
                     <td>
+<<<<<<< Updated upstream
                     <a href="{{ path('app_user_disable',{id:user.id}) }}" role="button">Désactiver</a>
                     <a href="{{ path('app_user_remove',{id:user.id}) }}" role="button">Supprimer</a>
+=======
+                        <a href="{{ path('app_user_add',{id:user.id}) }}" role="button">Désactiver</a>
+                        <a href="{{ path('app_user_remove',{id:user.id}) }}" role="button">Supprimer</a>
+>>>>>>> Stashed changes
                     </td>
                 </tr>
-                {% endfor %}
+            {% endfor %}
             </tbody>
         </table>
+<<<<<<< Updated upstream
         
         <div>
             <a href="{{ path('app_user_form_add') }}" role="button">Ajouter un utilisateur</a>
             <a href="{{ path('app_user_addall_get') }}" role="button">Ajouter des utilisateurs via un fichier</a>
         </div>
+=======
+>>>>>>> Stashed changes
     </div>
+    
+    <div>
+        <a href="{{ path('app_user_add') }}" role="button">Ajouter un utilisateur</a>
+        <a href="{{ path('app_user_addall_get') }}" role="button">Ajouter des utilisateurs via un fichier</a>
+    </div>
+</main>
 {% endblock %}
