@@ -43,13 +43,13 @@ class RegistrationController extends AbstractController
             );
             $user->setEmail($registrationModel->getEmail());
             $user->setUsername($registrationModel->getUsername());
+            $user->setActive(false);
 
             $profil = new Member();
             $profil->setUser($user);
             $profil->setSite($registrationModel->getCity());
             $profil->setMail($registrationModel->getEmail());
             $profil->setAdmin(false);
-            $profil->setAsset(false);
 
             $user->setProfil($profil);
 

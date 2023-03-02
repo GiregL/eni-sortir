@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\MemberRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,21 +22,20 @@ class SecurityController extends AbstractController
 
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
-        $userRemoved = $userRepository->findByEmailUsernameRemove($lastUsername);
-        $userDisabled = $userRepository->findByEmailUsernameDisable($lastUsername);
+        $user = $userRepository->findByEmailUsername($lastUsername);
 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
-        if ($userRemoved->getDateRemoved()) {
-            $error = $this->addFlash("error", "l'utilisateur a été supprimé par l'administrateur");
+
+        if ($error && $user->getDateRemoved()) {
+            $error = $this->addFlash("error", "Votre compte a été supprimé par l'administrateur ");
+        }else if ($error && $user->isActive()) {
+            $error = $this->addFlash("error", "Votre compte a été désactivé par l'administrateur ");
         } else if ($error) {
             $error = $this->addFlash("error", "l'email ou le mot de passe sont incorrects");
         }
-        if ($userDisabled->getProfil()->isAsset()) {
-            $error = $this->addFlash("error", "l'utilisateur a été désactivé par l'administrateur");
-        }
 
-        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error, "user"=> $user]);
     }
 
     /**

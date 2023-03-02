@@ -91,6 +91,7 @@ class UserController extends AbstractController {
             $user->setUsername($profile->getPseudo());
             $user->setEmail($profile->getEmail());
             $user->setRoles(["ROLE_USER"]);
+            $user->setActive(false);
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                         $user,
@@ -100,8 +101,8 @@ class UserController extends AbstractController {
             $member->setFirstname($profile->getFirstName());
             $member->setName($profile->getLastName());
             $member->setPhone($profile->getPhone());
+            $member->setMail($profile->getEmail());
             $member->setAdmin(false);
-            $member->setAsset(false);
             $member->setSite($profile->getCity());
             $user->setProfil($member);
 
@@ -134,11 +135,12 @@ class UserController extends AbstractController {
      * @Route("/admin/users/{id}/remove", name="app_user_remove", requirements={"id"="\d+"})
      * @IsGranted("ROLE_ADMIN")
      */
-    public function removeUser(User $user, EntityManagerInterface $em) {
+    public function removeUser(Member $member, EntityManagerInterface $em) {
         
+        $user = $member->getUser();
         $user->setDateRemoved(new DateTime());
         $em->flush();
-        $this->addFlash("success", "Le compte a bien été supprimé .");
+        $this->addFlash("success", "Le compte a bien été supprimé.");
         return $this->redirectToRoute('app_user_index');
     }
 
@@ -146,9 +148,10 @@ class UserController extends AbstractController {
      * @Route("/admin/users/{id}/disable", name="app_user_disable", requirements={"id"="\d+"})
      * @IsGranted("ROLE_ADMIN")
      */
-    public function disableUser(User $user, EntityManagerInterface $em) {
+    public function disableUser(Member $member, EntityManagerInterface $em) {
         
-        $user->getProfil()->setAsset(true);
+        $user = $member->getUser();
+        $user->setActive(true);
         $em->flush();
         $this->addFlash("success", "Le compte a bien été desactivé.");
         return $this->redirectToRoute('app_user_index');
