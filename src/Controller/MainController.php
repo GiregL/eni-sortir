@@ -58,5 +58,4 @@ class MainController extends AbstractController
             "event_list" => $event_list,
         ]));
     }
-
 }

@@ -3,37 +3,39 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
-<main class="container" id="maincontent">
-    <div class="row">
-        {% include "partials/_flash.html.twig" %}
-        <h2 class="col-xs-12 col-md-8 col-md-offset-2">S'enregistrer</h2>
+<main class="content-container" id="maincontent">
+    <div>
+        <h1>S'enregistrer</h1>
+        
+        <div>
+            {% include "partials/_flash.html.twig" %}
+        </div>
 
-        {{ form_start(registrationForm, {'attr': {'class': 'col-xs-12 col-md-8 col-md-offset-2'}}) }}
-            <div class="row">      
+        {{ form_start(registrationForm) }}
+            <div>      
                 {{ form_label(registrationForm.username)}}
-                {{ form_widget(registrationForm.username, {'attr': {'class': 'col-xs-8'}}) }}
+                {{ form_widget(registrationForm.username) }}
             </div>
 
-            <div class="row">
-                {{ form_label(registrationForm.email) }}
-                {{ form_widget(registrationForm.email, {'attr': {'class': 'col-xs-8'}}) }}
+            <div>
+                {{ form_label(registrationForm.email)}}
+                {{ form_widget(registrationForm.email)}}
             </div>
 
-            <div class="row">
-                {{ form_label(registrationForm.plainPassword) }}
-                {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'col-xs-8'}}) }}
+            <div>
+                {{ form_label(registrationForm.plainPassword)}}
+                {{ form_widget(registrationForm.plainPassword)}}
             </div>
 
-            <div class="row">
-                {{ form_label(registrationForm.city) }}
-                {{ form_widget(registrationForm.city, {'attr': {'class': 'col-xs-8'}}) }}
+            <div>
+                {{ form_label(registrationForm.city)}}
+                {{ form_widget(registrationForm.city)}}
             </div>
 
-            <button type="submit" class="btn">S'enregistrer</button>
+            <div>
+                <button type="submit">S'enregistrer</button>
+            </div>
         {{ form_end(registrationForm) }}
     </div>
 </main>
-<footer>
-
-</footer>
 {% endblock %}

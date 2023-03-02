@@ -4,53 +4,53 @@
 
 {% block body %}
     {% include 'partials/_flash.html.twig' %}
-    <div class="container" id="maincontent">
-        <div class="row"> 
-            <div class="grid col-xs-6">
+    <div class="content-container" id="maincontent">
+        <div> 
+            <div>
                 <p>Nom de la sortie</p>
                 <input type="text" value="{{ availableEvent.name }}" readonly>
             </div>
-            <div class="grid col-xs-6">
+            <div>
                 <p>Ville organisatrice</p>
                 <input type="text" value="{{ availableEvent.site.name }}" readonly>
             </div>
-            <div class="grid col-xs-6">
+            <div>
                 <p>Date de la sortie</p>
                 <input type="text" value="{{ availableEvent.startDate | date('m/d/Y') }}" readonly>
             </div>
-            <div class="grid col-xs-6">
+            <div>
                 <p>Lieu</p>
                 <input type="text" value="{{ availableEvent.place.name }}" readonly>
             </div>
-            <div class="grid col-xs-6">
+            <div>
                 <p>Date limite d'inscription</p>
                 <input type="text" value="{{ availableEvent.dateLimitRegister|date('m/d/Y') }}" readonly>
             </div>
-            <div class="grid col-xs-6">
+            <div>
                 <p>Rue</p>
                 <input type="text" value="{{ availableEvent.place.street }}" readonly>
             </div>
-            <div class="grid col-xs-6">
+            <div>
                 <p>Nombre de places</p>
                 <input type="text" value="{{ availableEvent.maxRegister }}" readonly>
             </div>
-            <div class="grid col-xs-6">
+            <div>
                 <p>Code postal</p>
                 <input type="text" value="{{ availableEvent.place.city.postCode }}" readonly>
             </div>
-            <div class="grid col-xs-6">
+            <div>
                 <p>Durée (minutes)</p>
                 <input type="text" value="{{ availableEvent.duration }}" readonly>
             </div>
-            <div class="grid col-xs-6">
+            <div>
                 <p>Latitude</p>
                 <input type="text" value="{{ availableEvent.place.latitude }}" readonly>
             </div>
-            <div class="grid col-xs-6">
+            <div>
                 <p>Description et infos</p>
                 <input type="text" value="{{ availableEvent.eventInfos }}" readonly>
             </div>
-            <div class="grid col-xs-6">
+            <div>
                 <p>Longitude</p>
                 <input type="text" value="{{ availableEvent.place.longitude }}" readonly>
             </div>
@@ -59,7 +59,7 @@
 
     <h3> Liste des participants Inscrits </h3>
 
-    <div class="container">
+    <div class="content-container">
         <table>
             <thead>
                 <tr>
