@@ -39,8 +39,9 @@
                         {% if not isPublish(event) %}
                             <a href='{{ path('app_event_publish',{id:event.id}) }}'>Publier </a>
                         {% endif %}
-                        {% if app.user and isUserOrganizerOfEvent(app.user, event) %}
+                        {% if app.user and isUserOrganizerOfEvent(app.user, event) or is_granted("ROLE_ADMIN") %}
                             <a href='{{ path('app_event_cancel_show',{id:event.id}) }}'>Annuler </a>
+                        {% elseif app.user and isUserOrganizerOfEvent(app.user, event) %}
                             <a href='{{ path('app_event_update',{id:event.id}) }}'>Modifier </a>
                         {% endif %}
                     {% endif %}

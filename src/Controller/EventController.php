@@ -91,7 +91,9 @@ class EventController extends AbstractController
             return $this->redirectToRoute("app_main");
         }
 
-        if (!$this->eventServices->isUserOrganizerOfEvent($this->getUser(), $event)) {
+        $admin = $this->getUser()->getRoles()[0];
+
+        if (!($this->eventServices->isUserOrganizerOfEvent($this->getUser(), $event) || $admin)) {
             $this->logger->info("Tentative d'annulation de l'événement {$event->getId()} par l'utilisateur non organisateur {$this->getUser()->getUsername()}");
             $this->addFlash("error", "Vous n'avez pas la permission d'annuler un événement dont vous n'êtes pas l'organisateur.");
             return $this->redirectToRoute("app_main");
@@ -143,10 +145,12 @@ class EventController extends AbstractController
             return $this->redirectToRoute("app_event_detail", ["id" => $event->getId()]);
         }
 
+        $admin = $this->getUser()->getRoles()[0];
+
         // Check if the used is allowed to cancel the event
-        if (!$this->eventServices->isUserOrganizerOfEvent($currentUser, $event)) {
+        if (!($this->eventServices->isUserOrganizerOfEvent($currentUser, $event) || $admin)) {
             $this->logger->info("Tentative de suppression d'un événement dont l'utilisateur n'est pas organisateur.");
-            $this->addFlash("error", "Vous ne pouvez pas supprimer cet événement, vous n'en êtes pas l'organisateur.");
+            $this->addFlash("error", "Vous ne pouvez pas annuler cet événement, vous n'en êtes pas l'organisateur.");
             return $this->redirectToRoute("app_event_detail", ["id" => $event->getId()]);
         }
 
