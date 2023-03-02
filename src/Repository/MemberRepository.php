@@ -34,6 +34,7 @@ class MemberRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('m')
             ->leftJoin('m.user', 'u')
             ->andWhere('u.dateRemoved IS NULL')
+            ->andWhere('u.active = false')
             ->select('m')
             ->getQuery()
             ->getResult();

@@ -41,6 +41,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $username;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $active;
+
+    /**
      * @ORM\OneToOne(targetEntity=Member::class, cascade={"persist", "remove"}, mappedBy="user", orphanRemoval=true)
      * @ORM\JoinColumn(nullable=true)
      */
@@ -55,6 +60,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $dateRemoved;
+
+    public function __construct() 
+    {
+        $this->active = false;
+    }
 
     public function getId(): ?int
     {
@@ -195,4 +205,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function isActive(): ?bool
+    {
+        return $this->active;
+    }
+
+    public function setActive(bool $active): self
+    {
+        $this->active = $active;
+
+        return $this;
+    }
+
 }

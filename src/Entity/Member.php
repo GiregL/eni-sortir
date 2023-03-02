@@ -44,10 +44,10 @@ class Member
      */
     private $admin;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $asset;
+    // /**
+    //  * @ORM\Column(type="boolean")
+    //  */
+    // private $asset;
 
     /**
      * @ORM\OneToOne(targetEntity=User::class, cascade={"persist", "remove"}, inversedBy="profil",orphanRemoval=true)
@@ -78,7 +78,7 @@ class Member
         $this->phone = '';
         $this->mail = '';
         $this->admin = false;
-        $this->asset = true;
+        // $this->asset = false;
         $this->user = null;
 
         $this->events = new ArrayCollection();
@@ -150,17 +150,17 @@ class Member
         return $this;
     }
 
-    public function isAsset(): ?bool
-    {
-        return $this->asset;
-    }
+    // public function isAsset(): ?bool
+    // {
+    //     return $this->asset;
+    // }
 
-    public function setAsset(bool $asset): self
-    {
-        $this->asset = $asset;
+    // public function setAsset(bool $asset): self
+    // {
+    //     $this->asset = $asset;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     /**
      * @return Collection<int, Event>
