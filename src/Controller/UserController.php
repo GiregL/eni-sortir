@@ -4,18 +4,13 @@ namespace App\Controller;
 
 use App\Entity\Member;
 use App\Entity\User;
-use App\Exceptions\UserServicesException;
 use App\Form\AddUserFormType;
 use App\Form\BatchAddUsersFormType;
-use App\Form\ProfileUpdateFormType;
 use App\Model\BatchAddUsersModel;
 use App\Model\ProfileUpdateModel;
-use App\Model\RegistrationModel;
 use App\Repository\MemberRepository;
-use App\Repository\UserRepository;
 use App\Services\UserServices;
 use DateTime;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,14 +26,12 @@ class UserController extends AbstractController {
     private $logger;
     private $memberRepository;
     private $userServices;
-    private $userRepository;
 
-    public function __construct(LoggerInterface $logger, MemberRepository $memberRepository, UserServices $userServices, UserRepository $userRepository)
+    public function __construct(LoggerInterface $logger, MemberRepository $memberRepository, UserServices $userServices)
     {
         $this->logger = $logger;
         $this->memberRepository = $memberRepository;
         $this->userServices = $userServices;
-        $this->userRepository = $userRepository;
     }
 
     /**

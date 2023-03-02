@@ -16,30 +16,24 @@
                 <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
             {% endif %}
             
-            {% if app.user %}
-            <div>
-                You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
-            </div>
-            {% endif %}
-            
-            <div>
-                <label for="inputEmail">Identifiant : </label>
-                <input type="text" value="{{ last_username }}" name="emailUsername" id="inputEmailUsername"required>
-            </div>
-
-            <div>
-                <label for="inputPassword">Mot de passe : </label>
-                <input type="password" name="password" id="inputPassword"autocomplete="current-password" required>
-            </div>
-            
-            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
-            <div>
-                <label for="_remember_me"><input type="checkbox" name="_remember_me" id="_remember_me"> Se souvenir de moi</label>
-            </div>
-            
-            <div>
-                <button type="submit">Sign in</button>
+            <div class="stack">
+                <div class="field_type">
+                    <label for="inputEmail">Identifiant : </label>
+                    <input type="text" value="{{ last_username }}" name="emailUsername" id="inputEmailUsername"required>
+                </div>
+                
+                <div class="field_type">
+                    <label for="inputPassword">Mot de passe : </label>
+                    <input type="password" name="password" id="inputPassword"autocomplete="current-password" required>
+                </div>
+                
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                
+                <label for="_remember_me"><input type="checkbox" name="_remember_me" id="_remember_me"> Se souvenir de moi</label> 
+                
+                <div>
+                    <button type="submit">Se connecter</button>
+                </div>
             </div>
         </form>
     </div>

@@ -3,10 +3,10 @@
 {% block title %}ENI Sortir - Profil de {{ user.username }}{% endblock %}
 
 {% block body %}
-    <main class="content-container" id="maincontent">
+    <main class="content-container stack" id="maincontent">
         <h1>Mon profil</h1>
         <div>
-        <img src="{{ asset('uploads/images/'~ profilOrganizer.user.nameImage) }}" alt="img">
+            <img src="{{ asset('uploads/images/'~ profilOrganizer.user.nameImage) }}" alt="img">
             <div>
                 <div>
                     <p>Prénom</p>

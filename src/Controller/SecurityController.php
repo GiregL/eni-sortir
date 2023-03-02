@@ -27,11 +27,13 @@ class SecurityController extends AbstractController
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
 
-        if ($error && $user->getDateRemoved()) {
-            $error = $this->addFlash("error", "Votre compte a été supprimé par l'administrateur ");
-        }else if ($error && $user->isActive()) {
-            $error = $this->addFlash("error", "Votre compte a été désactivé par l'administrateur ");
-        } else if ($error) {
+        if ($error && $user) {
+            if ($user->getDateRemoved()) {
+                $error = $this->addFlash("error", "Votre compte a été supprimé par l'administrateur ");
+            } else if ($user->isActive()) {
+                $error = $this->addFlash("error", "Votre compte a été désactivé par l'administrateur ");
+            }
+        } else if  ($error) {
             $error = $this->addFlash("error", "l'email ou le mot de passe sont incorrects");
         }
 

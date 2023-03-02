@@ -12,29 +12,31 @@
         </div>
 
         {{ form_start(registrationForm) }}
-            <div>      
+        <div class="stack">
+            <div class="field_type">      
                 {{ form_label(registrationForm.username)}}
                 {{ form_widget(registrationForm.username) }}
             </div>
 
-            <div>
+            <div class="field_type">
                 {{ form_label(registrationForm.email)}}
                 {{ form_widget(registrationForm.email)}}
             </div>
-
-            <div>
+            
+            <div class="field_type">
                 {{ form_label(registrationForm.plainPassword)}}
                 {{ form_widget(registrationForm.plainPassword)}}
             </div>
-
-            <div>
+            
+            <div class="field_type">
                 {{ form_label(registrationForm.city)}}
                 {{ form_widget(registrationForm.city)}}
             </div>
-
+            
             <div>
                 <button type="submit">S'enregistrer</button>
             </div>
+        </div>
         {{ form_end(registrationForm) }}
     </div>
 </main>

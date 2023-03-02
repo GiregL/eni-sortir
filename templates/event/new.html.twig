@@ -5,10 +5,12 @@
 {% block body %}
 {% include "partials/_flash.html.twig" %}
 <main class="content-container" id="maincontent">
-    <h1>Create new Event</h1>
+    <h1>Créer une sortie</h1>
 
     {{ form_start(form) }}
-    {{ form_widget(form) }}
+    <div class="stack">
+        {{ form_widget(form) }}
+    </div>
     {{ form_end(form) }}
 
     <a class="btn" href="{{ path('app_main') }}">back to home</a>

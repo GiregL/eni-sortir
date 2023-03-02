@@ -24,15 +24,15 @@ class AddUserFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('pseudo', TextType::class, ["label" => "Pseudo", "required" => false])
-            ->add('firstName', TextType::class, ["label" => "Prénom", "required" => false])
-            ->add('lastName', TextType::class, ["label" => "Nom de famille", "required" => false])
-            ->add('phone', TextType::class, ["label" => "Téléphone", "required" => false])
-            ->add('email', EmailType::class, ["label" => "E-mail", "required" => false])
-            ->add('password', PasswordType::class, ["label" => "Mot de passe", "required" => false])
-            ->add('confirmPassword', PasswordType::class, ["label" => "Confirmation du mot de passe", "required" => false])
+            ->add('pseudo', TextType::class, ["label" => "Pseudo : ", "required" => false])
+            ->add('firstName', TextType::class, ["label" => "Prénom : ", "required" => false])
+            ->add('lastName', TextType::class, ["label" => "Nom de famille : ", "required" => false])
+            ->add('phone', TextType::class, ["label" => "Téléphone : ", "required" => false])
+            ->add('email', EmailType::class, ["label" => "E-mail : ", "required" => false])
+            ->add('password', PasswordType::class, ["label" => "Mot de passe : ", "required" => false])
+            ->add('confirmPassword', PasswordType::class, ["label" => "Confirmation du mot de passe : ", "required" => false])
             ->add('city', EntityType::class, [
-                "label" => "Ville de rattachement",
+                "label" => "Ville de rattachement : ",
                 "required" => false,
                 "class" => Site::class,
                 "choice_label" => "name"

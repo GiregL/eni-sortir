@@ -3,79 +3,83 @@
 {% block title %}Évènements disponibles{% endblock %}
 
 {% block body %}
+<main class="content-container" id="maincontent">
+    <h1>Evénement - {{availableEvent.name}}</h1>
     {% include 'partials/_flash.html.twig' %}
-    <div class="content-container" id="maincontent">
-        <div> 
-            <div>
-                <p>Nom de la sortie</p>
-                <input type="text" value="{{ availableEvent.name }}" readonly>
-            </div>
-            <div>
-                <p>Ville organisatrice</p>
-                <input type="text" value="{{ availableEvent.site.name }}" readonly>
-            </div>
-            <div>
-                <p>Date de la sortie</p>
-                <input type="text" value="{{ availableEvent.startDate | date('m/d/Y') }}" readonly>
-            </div>
-            <div>
-                <p>Lieu</p>
-                <input type="text" value="{{ availableEvent.place.name }}" readonly>
-            </div>
-            <div>
-                <p>Date limite d'inscription</p>
-                <input type="text" value="{{ availableEvent.dateLimitRegister|date('m/d/Y') }}" readonly>
-            </div>
-            <div>
-                <p>Rue</p>
-                <input type="text" value="{{ availableEvent.place.street }}" readonly>
-            </div>
-            <div>
-                <p>Nombre de places</p>
-                <input type="text" value="{{ availableEvent.maxRegister }}" readonly>
-            </div>
-            <div>
-                <p>Code postal</p>
-                <input type="text" value="{{ availableEvent.place.city.postCode }}" readonly>
-            </div>
-            <div>
-                <p>Durée (minutes)</p>
-                <input type="text" value="{{ availableEvent.duration }}" readonly>
-            </div>
-            <div>
-                <p>Latitude</p>
-                <input type="text" value="{{ availableEvent.place.latitude }}" readonly>
-            </div>
-            <div>
-                <p>Description et infos</p>
-                <input type="text" value="{{ availableEvent.eventInfos }}" readonly>
-            </div>
-            <div>
-                <p>Longitude</p>
-                <input type="text" value="{{ availableEvent.place.longitude }}" readonly>
-            </div>
+
+    <div> 
+        <div>
+            <p>Nom de la sortie</p>
+            <input type="text" value="{{ availableEvent.name }}" readonly>
+        </div>
+        <div>
+            <p>Ville organisatrice</p>
+            <input type="text" value="{{ availableEvent.site.name }}" readonly>
+        </div>
+        <div>
+            <p>Date de la sortie</p>
+            <input type="text" value="{{ availableEvent.startDate | date('m/d/Y') }}" readonly>
+        </div>
+        <div>
+            <p>Lieu</p>
+            <input type="text" value="{{ availableEvent.place.name }}" readonly>
+        </div>
+        <div>
+            <p>Date limite d'inscription</p>
+            <input type="text" value="{{ availableEvent.dateLimitRegister|date('m/d/Y') }}" readonly>
+        </div>
+        <div>
+            <p>Rue</p>
+            <input type="text" value="{{ availableEvent.place.street }}" readonly>
+        </div>
+        <div>
+            <p>Nombre de places</p>
+            <input type="text" value="{{ availableEvent.maxRegister }}" readonly>
+        </div>
+        <div>
+            <p>Code postal</p>
+            <input type="text" value="{{ availableEvent.place.city.postCode }}" readonly>
+        </div>
+        <div>
+            <p>Durée (minutes)</p>
+            <input type="text" value="{{ availableEvent.duration }}" readonly>
+        </div>
+        <div>
+            <p>Latitude</p>
+            <input type="text" value="{{ availableEvent.place.latitude }}" readonly>
+        </div>
+        <div>
+            <p>Description et infos</p>
+            <input type="text" value="{{ availableEvent.eventInfos }}" readonly>
+        </div>
+        <div>
+            <p>Longitude</p>
+            <input type="text" value="{{ availableEvent.place.longitude }}" readonly>
         </div>
     </div>
-
-    <h3> Liste des participants Inscrits </h3>
-
-    <div class="content-container">
-        <table>
-            <thead>
-                <tr>
-                    <th scope="col">Pseudo</th>
-                    <th scope="col">Nom</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for member in memberInEvent %}
-                <tr>
-                    <td>{{ member.user.username|capitalize }}</td>
-                    <td>{{ member.firstName|capitalize }} {{ member.name|upper }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+    
+    <section>
+        <h3> Liste des participants Inscrits </h3>
+        
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th scope="col">Pseudo</th>
+                        <th scope="col">Nom</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for member in memberInEvent %}
+                    <tr>
+                        <td>{{ member.user.username|capitalize }}</td>
+                        <td>{{ member.firstName|capitalize }} {{ member.name|upper }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
 {% endblock %}
 
