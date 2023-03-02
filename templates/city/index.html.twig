@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}City index{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Villes</h1>
+
+        {{ form_start(filter) }}
+        <div class="grid">
+            {{ form_label(filter.cityName) }}
+            {{ form_widget(filter.cityName) }}
+            <button type="submit">Rechercher</button>
+            <a href="{{ path('app_city_index') }}">Réinitialiser</a>
+        </div>
+        {{ form_end(filter) }}
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Code postal</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for city in cities %}
+                <tr>
+                    <td>{{ city.name }}</td>
+                    <td>{{ city.postCode }}</td>
+                    <td>
+                        <a href="{{ path('app_city_show', {'id': city.id}) }}">Détails</a>
+                        <a href="{{ path('app_city_edit', {'id': city.id}) }}">Éditer</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">Aucune ville trouvée</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <a href="{{ path('app_city_new') }}">Ajouter une ville</a>
+    </div>
+{% endblock %}
