@@ -2,9 +2,9 @@
 
 {% block body %}
 
-    <h1>Annuler un événement</h1>
-
-    {{ form_start(cancelForm) }}
+{{ form_start(cancelForm) }}
+        <h2>Annuler un événement</h2>
+        
         <input type="hidden" name="token" value="{{ csrf_token('cancel-event-' ~ eventId) }}">
         {{ form_row(cancelForm.eventId) }}
 

@@ -4,11 +4,13 @@
 
 {% block body %}
 
-<main class="container" id="maincontent">
+<main class="content-container stack" id="maincontent">
+    <h1 class="visuallyhidden">Accueil</h1>
     {% include "partials/_flash.html.twig" %}
-    {{ include('main/_form.html.twig') }}
-
-    <table>
+    
+    {{ include('main/_event_filter_form.html.twig') }}
+    
+    {# <table>
         <thead>
             <tr>
                 <th scope="col">Nom de la sortie</th>
@@ -49,10 +51,56 @@
             </tr>
             {% endfor %}
         </tbody>
-    </table>
-    <a href="{{ path('app_event_new')}}" role="button">Créer une sortie</a>
-</main>
-<footer>
+    </table> #}
+    
+    <section aria-label="Liste des sorties">   
+        <h2 class="visuallyhidden">Liste des sorties</h2>     
+        <ul role="list" class="card_list">
+        {% for event in event_list %}
+            <li class="event-card">
+                <div class="header">
+                    <h3>{{ event.name }}</h3>
+                    <div>
+                        <p class="tag open-state-tag">{{ event.state.identifier }}</p>
+                        <p class="tag"> {{ event.members|length }} / {{ event.maxRegister }} Places</p>
+                    </div>
+                </div>
 
-</footer>
+                <p>Date de la sortie : <time>{{ event.startDate | date('d/m/Y') }}</time></p>
+
+                <p>Clôture des inscriptions : <time>{{ event.dateLimitRegister|date('d/m/Y') }}</time></p>
+                
+                <small>Organisateur : <a href="{{ path('app_profile_detail_id',{id:event.organizer.id}) }}">{{ event.organizer.name }}</a></small>
+                
+                <div class="actions">
+                    <div class="btn-group">
+                        <a href="{{ path('app_event_detail',{id:event.id}) }}">Afficher </a> 
+                        {% if app.user %}
+                            {% if isUserRegisteredOnEvent(event, app.user.profil) and event.organizer and isUserRegisteredOnEvent(event, app.user.profil) %}
+                                <a href='{{ path('app_event_inscription',{id:event.id}) }}'>S'incrire </a>
+                            {% else %}
+                                <a href="{{ path('app_event_unsub', {id:event.id}) }}">Se désister </a> 
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                    <div class="btn-group">
+                        {% if app.user %}
+                            {% if not isPublish(event) %}
+                                <a href='{{ path('app_event_publish',{id:event.id}) }}'>Publier </a>
+                            {% endif %}
+                            {% if app.user and isUserOrganizerOfEvent(app.user, event) or is_granted("ROLE_ADMIN") %}
+                                <a href='{{ path('app_event_cancel_show',{id:event.id}) }}'>Annuler </a>
+                            {% elseif app.user and isUserOrganizerOfEvent(app.user, event) %}
+                                <a href='{{ path('app_event_update',{id:event.id}) }}'>Modifier </a>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            </li>
+        {% endfor %}
+        </ul>
+    </section>
+
+    <a href="{{ path('app_event_new')}}" class="btn">Créer une sortie</a>
+</main>
 {% endblock %}

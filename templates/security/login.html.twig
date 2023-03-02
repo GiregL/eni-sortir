@@ -3,13 +3,15 @@
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
+<main class="content-container" id="maincontent">
+    <div>
+        <h1>Se connecter</h1>
+        
+        <div>
+            {% include "partials/_flash.html.twig" %}
+        </div>
 
-<main class="container" id="maincontent">
-    <div class="row">
-        {% include "partials/_flash.html.twig" %}
-        <h2 class="col-xs-12 col-md-8 col-md-offset-2">Se connecter</h2>
-
-        <form method="post" class="col-xs-12 col-md-8 col-md-offset-2">
+        <form method="post">
             {% if error %}
                 <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
             {% endif %}
@@ -20,30 +22,26 @@
             </div>
             {% endif %}
             
-            <div class="row">
-                <label for="inputEmail" class="col-xs-4">Identifiant : </label>
-                <input type="text" value="{{ last_username }}" name="emailUsername" id="inputEmailUsername" class="col-xs-8" required autofocus>
+            <div>
+                <label for="inputEmail">Identifiant : </label>
+                <input type="text" value="{{ last_username }}" name="emailUsername" id="inputEmailUsername"required>
             </div>
 
-            <div class="row">
-                <label for="inputPassword" class="col-xs-4">Mot de passe : </label>
-                <input type="password" name="password" id="inputPassword" class="col-xs-8" autocomplete="current-password" required>
+            <div>
+                <label for="inputPassword">Mot de passe : </label>
+                <input type="password" name="password" id="inputPassword"autocomplete="current-password" required>
             </div>
             
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-            <div class="row">
+            <div>
                 <label for="_remember_me"><input type="checkbox" name="_remember_me" id="_remember_me"> Se souvenir de moi</label>
             </div>
             
-            <div class="row">
-                <button class="col-xs-12" type="submit">Sign in</button>
+            <div>
+                <button type="submit">Sign in</button>
             </div>
         </form>
     </div>
 </main>
-<footer>
-
-</footer>
-{% include "partials/_flash.html.twig" %}
 {% endblock %}

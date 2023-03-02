@@ -5,42 +5,42 @@
 {% block body %}
 
 
-<main class="container" id="maincontent">
+<main class="content-container" id="maincontent">
         {% include 'partials/_flash.html.twig' %}
         <h2>Ajout d'un utilisateur</h2>
         {# <form action="{{ path("app_user_add") }}" method="post"> #}
             {{ form_start(updateForm) }}
-            <div class="grid">
+            <div>
                 <div>
-                    <div class="grid">
+                    <div>
                         {{ form_label(updateForm.pseudo) }}
                         {{ form_widget(updateForm.pseudo) }}
                     </div>
-                    <div class="grid">
+                    <div>
                         {{ form_label(updateForm.firstName) }}
                         {{ form_widget(updateForm.firstName) }}
                     </div>
-                    <div class="grid">
+                    <div>
                         {{ form_label(updateForm.lastName) }}
                         {{ form_widget(updateForm.lastName) }}
                     </div>
-                    <div class="grid">
+                    <div>
                         {{ form_label(updateForm.phone) }}
                         {{ form_widget(updateForm.phone) }}
                     </div>
-                    <div class="grid">
+                    <div>
                         {{ form_label(updateForm.email) }}
                         {{ form_widget(updateForm.email) }}
                     </div>
-                    <div class="grid">
+                    <div>
                         {{ form_label(updateForm.password) }}
                         {{ form_widget(updateForm.password) }}
                     </div>
-                    <div class="grid">
+                    <div>
                         {{ form_label(updateForm.confirmPassword) }}
                         {{ form_widget(updateForm.confirmPassword) }}
                     </div>
-                    <div class="grid">
+                    <div>
                         {{ form_label(updateForm.city) }}
                         {{ form_widget(updateForm.city) }}
                     </div>
@@ -50,13 +50,14 @@
                     </div>
                 </div>
             </div>
-            <div class="grid">
-                {{ form_widget(updateForm.send) }}
-                {# <a href="{{ path('app_user_add') }}" role="button">Enregistrer</a> #}
-                {# <a href="{{ path('app_user_index') }}" role="button">Annuler</a> #}
-            </div>
-            {{ form_end(updateForm) }}
-        </form>
-    </main>
+        </div>
+        <div>
+            {{ form_widget(updateForm.send) }}
+            {# <a href="{{ path('app_user_add') }}" class="btn">Enregistrer</a> #}
+            {# <a href="{{ path('app_user_index') }}" class="btn">Annuler</a> #}
+        </div>
+        {{ form_end(updateForm) }}
+    </form>
+</main>
 
 {% endblock %}

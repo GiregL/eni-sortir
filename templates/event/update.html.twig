@@ -4,58 +4,58 @@
 
 {% block body %}
     {% include 'partials/_flash.html.twig' %}
-    <div class="container" id="maincontent">
+    <div class="content-container" id="maincontent">
     {{ form_start(form) }}
-        <div class="row"> 
-            <div class="grid col-xs-6">
+        <div> 
+            <div>
                 {{ form_label(form.name) }}
                 {{ form_widget(form.name) }}
             </div>
-            <div class="grid col-xs-6">
+            <div>
                 <p>Ville organisatrice</p>
                 <input type="text" value="{{ availableEvent.site.name }}">
             </div>
-            <div class="grid col-xs-6">
+            <div>
                 {{ form_label(form.startDate) }}
                 {{ form_widget(form.startDate) }}
             </div>
-            <div class="grid col-xs-6">
+            <div>
                 {{ form_label(form.place) }}
                 {{ form_widget(form.place) }}
             </div>
-            <div class="grid col-xs-6">
+            <div>
                 {{ form_label(form.dateLimitRegister) }}
                 {{ form_widget(form.dateLimitRegister) }}
             </div>
-            <div class="grid col-xs-6">
+            <div>
                 <p>Date limite d'inscription</p>
                 <input type="text" value="{{ availableEvent.dateLimitRegister|date('m/d/Y') }}" readonly>
             </div>
-            <div class="grid col-xs-6">
+            <div>
                 <p>Rue</p>
                 <input type="text" value="{{ availableEvent.place.street }}">
             </div>
-            <div class="grid col-xs-6">
+            <div>
                 {{ form_label(form.MaxRegister) }}
                 {{ form_widget(form.MaxRegister) }}
             </div>
-            <div class="grid col-xs-6">
+            <div>
                 <p>Code postal</p>
                 <input type="text" value="{{ availableEvent.place.city.postCode }}">
             </div>
-            <div class="grid col-xs-6">
+            <div>
                 {{ form_label(form.duration) }}
                 {{ form_widget(form.duration) }}
             </div>
-            <div class="grid col-xs-6">
+            <div>
                 <p>Latitude</p>
                 <input type="text" value="{{ availableEvent.place.latitude }}">
             </div>
-            <div class="grid col-xs-6">
+            <div>
                 {{ form_label(form.eventInfos) }}
                 {{ form_widget(form.eventInfos) }}
             </div>
-            <div class="grid col-xs-6">
+            <div>
                 <p>Longitude</p>
                 <input type="text" value="{{ availableEvent.place.longitude }}">
             </div>
