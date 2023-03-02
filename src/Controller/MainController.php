@@ -41,6 +41,7 @@ class MainController extends AbstractController
             $currentMemberId = $this->getUser()->getProfil()->getId();
         }
 
+        $now = new \DateTime();
         // Getting all current events
         $event_list = $this->eventRepository->findFilteredEvents($eventFilter, $currentMemberId);
         $twig->addFunction(new TwigFunction("isUserRegisteredOnEvent", function($event, $member) {
@@ -56,6 +57,7 @@ class MainController extends AbstractController
         return new Response($twig->render('main/index.html.twig', [
             "eventFilterForm" => $form->createView(),
             "event_list" => $event_list,
+            "now" => $now
         ]));
     }
 }
