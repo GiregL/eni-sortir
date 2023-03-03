@@ -174,7 +174,7 @@ class ProfileController extends AbstractController
     /**
      * @Route("/profile/detail/{id}", name="app_profile_detail_id", requirements={"id"="\d+"})
      */
-    public function detailOrganizer(Member $profilOrganizer, Site $site): Response
+    public function detailOrganizer(Member $profilOrganizer): Response
     {
         $user = $this->getUserAndProfile();
 
@@ -186,7 +186,7 @@ class ProfileController extends AbstractController
         return $this->render('profile/detail.html.twig', [
             "profilOrganizer" => $profilOrganizer,
             "user" => $user,
-            "site" => $site
+            "site" => $profilOrganizer->getSite()
         ]);
     }
 }
