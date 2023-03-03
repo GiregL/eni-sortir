@@ -4,9 +4,11 @@
 
 {% block body %}
     <main class="content-container stack" id="maincontent">
-        <h1>Profil de {{ user.username }}</h1>
+        <h1>Profil </h1>
         <div>
-            <img src="{{ asset('uploads/images/'~ profilOrganizer.user.nameImage) }}" alt="img">
+            {% if profilOrganizer.user.nameImage %}
+                <img src="{{ asset('uploads/images/'~ profilOrganizer.user.nameImage) }}" alt="img">
+            {% endif %}
             <div>
                 <div>
                     <p>Prénom</p>
