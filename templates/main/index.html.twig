@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello MainController!{% endblock %}
+{% block title %}Accueil - ENI-Sortir{% endblock %}
 
 {% block body %}
 
@@ -32,7 +32,7 @@
                     
                     <div class="actions">
                         <div class="btn-group">
-                            <a href="{{ path('app_event_detail',{id:event.id}) }}">Afficher </a> 
+                            <a href="{{ path('app_event_detail',{id:event.id}) }}">Détails</a> 
                             {% if app.user and event.dateLimitRegister > now %}
                                 {% if isUserRegisteredOnEvent(event, app.user.profil) %}
                                     <a class="btn" href="{{ path('app_event_unsub', {id:event.id}) }}">Se désister </a> 

@@ -3,8 +3,9 @@
 {% block title %}Évènements disponibles{% endblock %}
 
 {% block body %}
+<main class="content-container" id="maincontent">
+    <h1>Évènements disponibles</h1>
     {% include 'partials/_flash.html.twig' %}
-    <div class="content-container" id="maincontent">
     {{ form_start(form) }}
         <div> 
             <div>
@@ -60,7 +61,7 @@
                 <input type="text" value="{{ availableEvent.place.longitude }}">
             </div>
         </div>
-    </div>
+    </main>
     <div>
         {{ form_widget(form.save) }} 
     </div>

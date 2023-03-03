@@ -32,7 +32,6 @@ class ProfileUpdateFormType extends AbstractType
             ->add('confirmPassword', PasswordType::class, ["label" => "Confirmation du mot de passe", "required" => false])
             ->add('city', EntityType::class, [
                 "label" => "Ville de rattachement",
-                "required" => false,
                 "class" => Site::class,
                 "choice_label" => "name"
             ])
