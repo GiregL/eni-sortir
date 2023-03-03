@@ -35,16 +35,16 @@
                             <a href="{{ path('app_event_detail',{id:event.id}) }}">Détails</a> 
                             {% if app.user and event.dateLimitRegister > now %}
                                 {% if isUserRegisteredOnEvent(event, app.user.profil) %}
-                                    <a class="btn" href="{{ path('app_event_unsub', {id:event.id}) }}">Se désister </a> 
+                                    <a href="{{ path('app_event_unsub', {id:event.id}) }}">Se désister </a> 
                                 {% else %}
-                                    <a class="btn" href='{{ path('app_event_inscription',{id:event.id}) }}'>S'incrire </a>
+                                    <a href='{{ path('app_event_inscription',{id:event.id}) }}'>S'incrire </a>
                                 {% endif %}
                             {% endif %}
                         </div>
                         <div class="btn-group">
                             {% if app.user %}
                                 {% if not isPublish(event) %}
-                                    <a class="btn" href='{{ path('app_event_publish',{id:event.id}) }}'>Publier </a>
+                                    <a href='{{ path('app_event_publish',{id:event.id}) }}'>Publier </a>
                                 {% endif %}
                                 {% if app.user and isUserOrganizerOfEvent(app.user, event) or is_granted("ROLE_ADMIN") %}
                                     <a href='{{ path('app_event_cancel_show',{id:event.id}) }}'> Annuler</a>
