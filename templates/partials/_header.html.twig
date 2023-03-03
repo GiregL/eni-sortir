@@ -20,7 +20,7 @@
     ]
 %}
 
-{% set menu = is_granted("ROLE_USER") ? menu|merge(adminLinks) : menu %}
+{% set menu = is_granted("ROLE_ADMIN") ? menu|merge(adminLinks) : menu %}
 
 {% set menu = app.user ? menu|merge(connectedLinks) : menu|merge(disconnectedlinks) %}
 
