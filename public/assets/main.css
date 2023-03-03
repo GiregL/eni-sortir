@@ -25,7 +25,7 @@
   --open-state-color:#51c25b;
   --closed-state-color:#c25151;
 
-  --stack-spacing: 0.5rem;
+  --stack-spacing: 0.75rem;
 }
 
 :root {
@@ -340,6 +340,7 @@ caption {
 .site-nav__list{
   display: flex;
   flex-wrap: wrap;
+  justify-content: flex-end;
   gap: 0.5rem 1.5rem;
 }
 
@@ -711,7 +712,7 @@ figure figcaption {
 
 .field_type {
   display: grid;
-  grid-template-columns: 1fr 40ch;
+  grid-template-columns: 24ch 30ch;
   gap: 1rem;
 }
 
@@ -723,4 +724,11 @@ input {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem 0.5rem;
+}
+
+.centered-form {
+  width: 70ch;
+  margin: 120px auto 0;
+  border: 2px solid var(--color-dark);
+  padding: 1.7rem 2rem 1.5rem;
 }

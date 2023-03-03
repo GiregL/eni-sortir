@@ -48,7 +48,6 @@ class RegistrationFormType extends AbstractType
             ->add('city', EntityType::class, [
                 "label" => "Ville de rattachement",
                 "label_attr" => ['class' => 'col-xs-4'],
-                "required" => false,
                 "class" => Site::class,
                 "choice_label" => "name"
             ])

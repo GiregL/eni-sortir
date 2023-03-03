@@ -3,19 +3,20 @@
 {% block title %}City index{% endblock %}
 
 {% block body %}
-    <div class="content-container">
+<main class="content-container stack">
         <h1>Villes</h1>
-
         {{ form_start(filter) }}
-        <div class="grid">
-            {{ form_label(filter.cityName) }}
-            {{ form_widget(filter.cityName) }}
-            <button type="submit">Rechercher</button>
-            <a href="{{ path('app_city_index') }}">Réinitialiser</a>
-        </div>
+            <div class="field_type">
+                {{ form_label(filter.cityName) }}
+                {{ form_widget(filter.cityName) }}
+            </div>
+            <div>
+                <button type="submit">Rechercher</button>
+                <a href="{{ path('app_city_index') }}">Réinitialiser</a>
+            </div>
         {{ form_end(filter) }}
 
-        <table class="table">
+        <table>
             <thead>
                 <tr>
                     <th>Nom</th>
@@ -42,5 +43,5 @@
         </table>
 
         <a href="{{ path('app_city_new') }}">Ajouter une ville</a>
-    </div>
+</main>
 {% endblock %}
