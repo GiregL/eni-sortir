@@ -7,64 +7,64 @@
     <h1>Évènements disponibles</h1>
     {% include 'partials/_flash.html.twig' %}
     {{ form_start(form) }}
-        <div> 
-            <div>
+        <div class="stack"> 
+            <div class="field_type">
                 {{ form_label(form.name) }}
                 {{ form_widget(form.name) }}
             </div>
-            <div>
+            <div class="field_type">
                 <p>Ville organisatrice</p>
                 <input type="text" value="{{ availableEvent.site.name }}">
             </div>
-            <div>
+            <div class="field_type">
                 {{ form_label(form.startDate) }}
                 {{ form_widget(form.startDate) }}
             </div>
-            <div>
+            <div class="field_type">
                 {{ form_label(form.place) }}
                 {{ form_widget(form.place) }}
             </div>
-            <div>
+            <div class="field_type">
                 {{ form_label(form.dateLimitRegister) }}
                 {{ form_widget(form.dateLimitRegister) }}
             </div>
-            <div>
+            <div class="field_type">
                 <p>Date limite d'inscription</p>
                 <input type="text" value="{{ availableEvent.dateLimitRegister|date('m/d/Y') }}" readonly>
             </div>
-            <div>
+            <div class="field_type">
                 <p>Rue</p>
                 <input type="text" value="{{ availableEvent.place.street }}">
             </div>
-            <div>
+            <div class="field_type">
                 {{ form_label(form.MaxRegister) }}
                 {{ form_widget(form.MaxRegister) }}
             </div>
-            <div>
+            <div class="field_type">
                 <p>Code postal</p>
                 <input type="text" value="{{ availableEvent.place.city.postCode }}">
             </div>
-            <div>
+            <div class="field_type">
                 {{ form_label(form.duration) }}
                 {{ form_widget(form.duration) }}
             </div>
-            <div>
+            <div class="field_type">
                 <p>Latitude</p>
                 <input type="text" value="{{ availableEvent.place.latitude }}">
             </div>
-            <div>
+            <div class="field_type">
                 {{ form_label(form.eventInfos) }}
                 {{ form_widget(form.eventInfos) }}
             </div>
-            <div>
+            <div class="field_type">
                 <p>Longitude</p>
                 <input type="text" value="{{ availableEvent.place.longitude }}">
             </div>
+            <div>
+                {{ form_widget(form.save) }} 
+            </div>
         </div>
-    </main>
-    <div>
-        {{ form_widget(form.save) }} 
-    </div>
-    {{ form_end(form) }}
+        {{ form_end(form) }}
+</main>
 {% endblock %}
 

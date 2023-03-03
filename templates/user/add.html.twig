@@ -5,7 +5,7 @@
 {% block body %}
 
 
-<main class="content-container" id="maincontent">
+<main class="content-container stack" id="maincontent">
     <h1>Ajout d'un utilisateur</h1>
     {% include 'partials/_flash.html.twig' %}
         {{ form_start(updateForm) }}
@@ -46,11 +46,11 @@
                     {{ form_label(updateForm.nameImage) }}
                     {{ form_widget(updateForm.nameImage) }}
                 </div>
-            </div>
-            <div>
-                {{ form_widget(updateForm.send) }}
-                {# <a href="{{ path('app_user_add') }}" class="btn">Enregistrer</a> #}
-                {# <a href="{{ path('app_user_index') }}" class="btn">Annuler</a> #}
+                <div>
+                    {{ form_widget(updateForm.send) }}
+                    {# <a href="{{ path('app_user_add') }}" class="btn">Enregistrer</a> #}
+                    {# <a href="{{ path('app_user_index') }}" class="btn">Annuler</a> #}
+                </div>
             </div>
         {{ form_end(updateForm) }}
     </form>

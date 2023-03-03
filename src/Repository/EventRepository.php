@@ -120,7 +120,7 @@ class EventRepository extends ServiceEntityRepository
 
         if (!empty($criteria->getIsNotMember())) {
             $query = $query
-                ->andWhere('members.id = :member')
+                ->andWhere('members.id != :member')
                 ->setParameter('member', $member);
         }
 
