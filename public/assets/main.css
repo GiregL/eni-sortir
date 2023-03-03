@@ -21,8 +21,9 @@
   --border-color: #888;
   --outline-color: var(--color-brand);
 
-  --created-state-color:#516fc2;
+  --creating-state-color:#516fc2;
   --open-state-color:#51c25b;
+  --ongoing-state-color:#d3c335;
   --closed-state-color:#c25151;
 
   --stack-spacing: 0.75rem;
@@ -432,15 +433,21 @@ caption {
   font-size: 1rem;
 }
 
-.created-state-tag {
-  --tag-color: var(--created-state-color);
+.creating-state-tag {
+  --tag-color: var(--creating-state-color);
 }
 
 .open-state-tag {
   --tag-color: var(--open-state-color);
 }
 
-.closed-state-tag {
+.ongoing-state-tag {
+  --tag-color: var(--ongoing-state-color);
+}
+
+.closed-state-tag,
+.canceled-state-tag,
+.finished-state-tag {
   --tag-color: var(--closed-state-color);
 }
 
@@ -463,6 +470,10 @@ caption {
 */  
 .stack > *:not(.visuallyhidden) + * {
   margin-block-start: var(--stack-spacing);
+}
+
+a + a {
+  margin-inline-start: 0.5rem;
 }
 /*
   Utils end

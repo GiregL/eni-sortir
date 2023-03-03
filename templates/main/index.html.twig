@@ -19,7 +19,7 @@
                     <div class="header">
                         <h3>{{ event.name }}</h3>
                         <div>
-                            <p class="tag open-state-tag">{{ event.state.identifier }}</p>
+                            <p class="tag {{event.state.identifier|lower}}-state-tag">{{ event.state.identifier }}</p>
                             <p class="tag"> {{ event.members|length }} / {{ event.maxRegister }} Places</p>
                         </div>
                     </div>

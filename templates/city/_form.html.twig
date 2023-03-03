@@ -1,4 +1,7 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
+<div class="stack">
+    <div class="field_type">{{ form_label(form.name) }} {{ form_widget(form.name) }}</div>
+    <div class="field_type">{{ form_label(form.postCode) }} {{ form_widget(form.postCode) }}</div>
     <button class="btn">{{ button_label|default('Save') }}</button>
+</div>
 {{ form_end(form) }}
