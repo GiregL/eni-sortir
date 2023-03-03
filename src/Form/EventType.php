@@ -38,7 +38,7 @@ class EventType extends AbstractType
             ->add('duration', NumberType::class, [
                 'label' => 'Durée : ',
             ])
-            ->add('eventInfos', TextType::class, [
+            ->add('eventInfos', TextareaType::class, [
                 'label' => 'Description et Infos : ',
             ])
             ->add('place', EntityType::class, [
